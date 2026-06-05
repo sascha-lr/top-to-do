@@ -1,22 +1,36 @@
 class Project {
 
     #tasks = [];
+    #desc = '';
+    #id = crypto.randomUUID();
 
-    constructor(name, task) {
+    constructor(name, desc) {
         this.name = name;
-        this.tasks = task;
+        this.desc = desc;
     }
 
     get tasks() {
         return this.#tasks;
     }
 
-    set tasks(task) {
-        if (task && task.constructor === Task) {
-            this.#tasks.push(task);
-        } else if (task) {
-            throw new Error('An invalid task is being assigned to the Project!');
-        }
+    set tasks(input) {
+        throw new Error('You cannot reassign the tasks array.');
+    }
+
+    get desc() {
+        return this.#desc;
+    }
+
+    set desc(input) {
+        if (input) this.#desc = input;
+    }
+
+    get id() {
+        return this.#id;
+    }
+
+    set id(input) {
+        throw new Error('You cannot change the ID of the project manually.')
     }
 }
 

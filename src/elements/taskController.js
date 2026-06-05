@@ -1,5 +1,4 @@
 import { Task } from './constructors.js';
-import { projectController } from './projectController.js';
 
 export const taskController = (() => {
 
@@ -10,43 +9,46 @@ export const taskController = (() => {
         tasks.push(task);
     }
 
-    const findTask = (id) => {
-        const index = tasks.findIndex((item) => item.id === id);
+    const getTask = (id) => {
+        const index = tasks.findIndex((task) => task.id === id);
         return tasks[index];
-    }
-
-    const changeName = (id, name) => {
-        const task = findTask(id);
-        task.name = name;
-    }
-
-    const changeDesc = (id, desc) => {
-        const task = findTask(id);
-        task.desc = desc;
-    }
-
-    const changeDueDate = (id, date) => {
-        const task = findTask(id);
-        task.dueDate = date;
-    }
-
-    const changePriority = (id, priority) => {
-        const task = findTask(id);
-        task.priority = priority;
-    }
-
-    const checkTask = (id) => {
-        const task = findTask(id);
-        task.isDone = !task.isDone;
-    }
-
-    const deleteTask = (id) => {
-        const index = tasks.findIndex((item) => item.id === id);
-        tasks.splice(index, 1);
     }
 
     const getTasks = () => tasks;
 
-    return { getTasks, checkTask, addTask };
+    const changeName = (id, name) => {
+        const task = getTask(id);
+        task.name = name;
+    }
+
+    const changeDesc = (id, desc) => {
+        const task = getTask(id);
+        task.desc = desc;
+    }
+
+    const changeDueDate = (id, date) => {
+        const task = getTask(id);
+        task.dueDate = date;
+    }
+
+    const changePriority = (id, priority) => {
+        const task = getTask(id);
+        task.priority = priority;
+    }
+
+    const checkTask = (id) => {
+        const task = getTask(id);
+        task.isDone = !task.isDone;
+    }
+
+    const deleteTasks = ([...ids]) => {
+        for (let id of ids) {
+            const index = tasks.findIndex((task) => task.id === id);
+            tasks.splice(index, 1);
+        }
+    }
+
+
+    return { addTask, getTask, getTasks, changeName, changeDesc, changeDueDate, changePriority, checkTask, deleteTasks };
 
 })();

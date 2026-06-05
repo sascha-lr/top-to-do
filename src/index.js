@@ -1,4 +1,5 @@
-"use strict";
-
 import "./style.css";
-import { logicController } from "./elements/logicController.js";
+import { projectController } from "./elements/projectController.js";
+import { taskController } from "./elements/taskController.js";
+import { logicCommunicator } from "./elements/logicCommunicator.js";
+
