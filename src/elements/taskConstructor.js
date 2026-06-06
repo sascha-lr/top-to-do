@@ -1,40 +1,4 @@
-class Project {
-
-    #tasks = [];
-    #desc = '';
-    #id = crypto.randomUUID();
-
-    constructor(name, desc) {
-        this.name = name;
-        this.desc = desc;
-    }
-
-    get tasks() {
-        return this.#tasks;
-    }
-
-    set tasks(input) {
-        throw new Error('You cannot reassign the tasks array.');
-    }
-
-    get desc() {
-        return this.#desc;
-    }
-
-    set desc(input) {
-        if (input) this.#desc = input;
-    }
-
-    get id() {
-        return this.#id;
-    }
-
-    set id(input) {
-        throw new Error('You cannot change the ID of the project manually.')
-    }
-}
-
-class Task {
+export class Task {
 
     #name;
     #desc = '';
@@ -42,7 +6,6 @@ class Task {
     #created = new Date();
     #priority = 'medium';
     #isDone = false;
-    #id = crypto.randomUUID();
 
     constructor(name, desc, dueDate, priority, isDone) {
         this.name = name;
@@ -113,14 +76,4 @@ class Task {
     set created(input) {
         throw new Error('You cannot change the date when the task was created.');
     }
-
-    get id() {
-        return this.#id;
-    }
-
-    set id(input) {
-        throw new Error('You cannot change the ID of the task manually.')
-    }
 }
-
-export { Project, Task };

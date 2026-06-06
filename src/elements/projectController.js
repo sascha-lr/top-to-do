@@ -1,20 +1,32 @@
-import { Project } from './constructors.js';
+import { Project } from "./projectConstructor.js";
 
 export const projectController = (() => {
 
-    const projects = [];
+    const projects = new Map();
 
     const addProject = (name, desc) => {
         const project = new Project(name, desc);
-        projects.push(project);
+        const id = crypto.randomUUID();
+        projects.set(id, project);
+        return id;
     }
 
     const getProject = (id) => {
-        const index = projects.findIndex((project) => project.id === id);
-        return projects[index];
+        return projects.get(id);
     }
 
     const getProjects = () => projects;
+
+    const getProjectTask = (projectID, taskID) => {
+        const project = getProject(projectID);
+        return project.tasks.get(taskID);
+    }
+
+    const getProjectTasks = (id) => {
+        const project = getProject(id);
+        return project.tasks;
+    }
+
 
     const changeName = (id, name) => {
         const project = getProject(id);
@@ -28,12 +40,10 @@ export const projectController = (() => {
 
     const deleteProjects = ([...ids]) => {
         for (let id of ids) {
-            const index = projects.findIndex((project) => project.id === id);
-            projects.splice(index, 1);
+            projects.delete(id);
         }
     }
 
-
-    return { addProject, getProject, getProjects, changeName, changeDesc, deleteProjects };
+    return { addProject, getProject, getProjects, getProjectTask, getProjectTasks, changeName, changeDesc, deleteProjects };
 
 })();

@@ -1,17 +1,18 @@
-import { Task } from './constructors.js';
+import { Task } from "./taskConstructor.js";
 
 export const taskController = (() => {
 
-    const tasks = [];
+    const tasks = new Map();
 
     const addTask = (name, desc, dueDate, priority, isDone) => {
         const task = new Task(name, desc, dueDate, priority, isDone);
-        tasks.push(task);
+        const id = crypto.randomUUID();
+        tasks.set(id, task);
+        return id;
     }
 
     const getTask = (id) => {
-        const index = tasks.findIndex((task) => task.id === id);
-        return tasks[index];
+        return tasks.get(id);
     }
 
     const getTasks = () => tasks;
@@ -43,8 +44,7 @@ export const taskController = (() => {
 
     const deleteTasks = ([...ids]) => {
         for (let id of ids) {
-            const index = tasks.findIndex((task) => task.id === id);
-            tasks.splice(index, 1);
+            tasks.delete(id);
         }
     }
 
