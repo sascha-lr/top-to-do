@@ -78,3 +78,7 @@ h6 {
 body {
     background-color: black;
 }
+
+* {
+    color: white
+}

@@ -6,9 +6,8 @@ export const taskController = (() => {
 
     const addTask = (name, desc, dueDate, priority, isDone) => {
         const task = new Task(name, desc, dueDate, priority, isDone);
-        const id = crypto.randomUUID();
-        tasks.set(id, task);
-        return id;
+        tasks.set(task.id, task);
+        return task;
     }
 
     const getTask = (id) => {
@@ -47,7 +46,6 @@ export const taskController = (() => {
             tasks.delete(id);
         }
     }
-
 
     return { addTask, getTask, getTasks, changeName, changeDesc, changeDueDate, changePriority, checkTask, deleteTasks };
 

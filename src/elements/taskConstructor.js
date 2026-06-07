@@ -6,6 +6,7 @@ export class Task {
     #created = new Date();
     #priority = 'medium';
     #isDone = false;
+    #id = crypto.randomUUID();
 
     constructor(name, desc, dueDate, priority, isDone) {
         this.name = name;
@@ -21,7 +22,7 @@ export class Task {
 
     set name(input) {
         if (input.length < 3 || input.length > 20) {
-            throw new Error("The task's name needs to be between 3 and 20 characters long.");
+            throw new Error(`The task's name \n[Task ID: ${this.id}, \nCreated: ${this.created}] \nneeds to be between 3 and 20 characters long.`);
         } else {
             this.#name = input;
         }
@@ -43,7 +44,7 @@ export class Task {
         if (input instanceof Date) {
             this.#dueDate = input;
         } else {
-            console.warn("The due date has been provided in the wrong format or not at all. Therefore today's date will be set as the due date.");
+            console.warn(`The due date of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.created}] \nhas been provided in the wrong format or not at all. Therefore today's date will be set as the due date.`);
         }
     }
 
@@ -57,7 +58,7 @@ export class Task {
         if (validInputs.includes(input)) {
             this.#priority = input;
         } else {
-            console.warn("Priority has been provided in the wrong format or not at all. Therefore it is set to 'Medium'.");
+            console.warn(`The priority of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.created}] \nhas been provided in the wrong format or not at all. Therefore it is set to 'Medium'.`);
         }
     }
 
@@ -75,5 +76,13 @@ export class Task {
 
     set created(input) {
         throw new Error('You cannot change the date when the task was created.');
+    }
+
+    get id() {
+        return this.#id;
+    }
+
+    set id(input) {
+        throw new Error('You cannot change the ID of the task manually.');
     }
 }

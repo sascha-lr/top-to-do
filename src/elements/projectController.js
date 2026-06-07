@@ -6,9 +6,8 @@ export const projectController = (() => {
 
     const addProject = (name, desc) => {
         const project = new Project(name, desc);
-        const id = crypto.randomUUID();
-        projects.set(id, project);
-        return id;
+        projects.set(project.id, project);
+        return project;
     }
 
     const getProject = (id) => {
@@ -26,7 +25,6 @@ export const projectController = (() => {
         const project = getProject(id);
         return project.tasks;
     }
-
 
     const changeName = (id, name) => {
         const project = getProject(id);
