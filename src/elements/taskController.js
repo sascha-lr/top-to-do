@@ -41,7 +41,7 @@ export const taskController = (() => {
         task.isDone = !task.isDone;
     }
 
-    const deleteTasks = ([...ids]) => {
+    const deleteTasks = (...ids) => {
         for (let id of ids) {
             tasks.delete(id);
         }

@@ -1,14 +1,12 @@
 export const screenController = (() => {
 
-    const checkState = () => {
-        const activeProject = document.querySelector('nav .project.active');
-        if (activeProject) return activeProject.dataset.id;
+    const getActive = () => {
+        if (document.querySelector('nav .project.active')) return document.querySelector('nav .project.active').dataset.id;
         return false;
     }
 
-    const changeState = (projectID) => {
-        const activeProject = document.querySelector('nav .project.active');
-        if (activeProject) activeProject.classList.remove('active');
+    const changeActive = (projectID) => {
+        if (document.querySelector('nav .project.active')) document.querySelector('nav .project.active').classList.remove('active');
         if (projectID) document.querySelector(`nav .project[data-id="${projectID}"]`).classList.add('active');
     }
 
@@ -40,9 +38,12 @@ export const screenController = (() => {
 
     const updateScreen = (tasks) => {
         wipeScreen();
-        drawScreen(tasks);
+        drawScreen(tasks); //Not a real update
     }
 
-    return { drawScreen, wipeScreen, updateScreen, checkState, changeState };
+    // const updateNav = () => {
+    // }
+
+    return { drawScreen, wipeScreen, updateScreen, getActive, changeActive };
 
 })();
