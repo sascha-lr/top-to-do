@@ -1,7 +1,7 @@
 export class Task {
 
     #name;
-    #desc = '';
+    #desc = 'This task has no description.';
     #dueDate = new Date();
     #created = new Date();
     #priority = 'medium';
