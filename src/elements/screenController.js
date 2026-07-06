@@ -49,7 +49,7 @@ export const screenController = (() => {
 
             const taskDueDate = document.createElement('input');
             taskDueDate.classList.add('due-date');
-            taskDueDate.type = 'date';
+            taskDueDate.type = 'datetime-local';
             taskDueDate.value = task.dueDate;
             taskDueDate.dataset.dueDate = task.dueDate;
 

@@ -2,8 +2,8 @@ export class Task {
 
     #name;
     #desc = 'This task has no description.';
-    #dueDate = new Date();
-    #created = new Date();
+    #dueDate = new Date().toISOString().slice(0, -8);
+    #created = new Date().toISOString().slice(0, -8);
     #priority = 'medium';
     #isDone = false;
     #id = crypto.randomUUID();
@@ -41,7 +41,8 @@ export class Task {
     }
 
     set dueDate(input) {
-        if (input instanceof Date) {
+        const regex = /^\d{4}-\d{2}-\d{2}T00:00$/;
+        if (regex.test(input)) {
             this.#dueDate = input;
         } else {
             console.warn(`The due date of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.created}] \nhas been provided in the wrong format or not at all. Therefore today's date will be set as the due date.`);
