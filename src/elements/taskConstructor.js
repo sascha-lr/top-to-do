@@ -2,7 +2,7 @@ export class Task {
 
     #name;
     #desc = 'This task has no description.';
-    #dueDate = new Date().toISOString().slice(0, -8);
+    #dueDate = new Date().toISOString().split('T')[0] + 'T23:59';
     #created = new Date().toISOString().slice(0, -8);
     #priority = 'medium';
     #isDone = false;
@@ -45,7 +45,7 @@ export class Task {
         if (regex.test(input)) {
             this.#dueDate = input;
         } else {
-            console.warn(`The due date of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.created}] \nhas been provided in the wrong format or not at all. Therefore today's date will be set as the due date.`);
+            console.warn(`The due date of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.created}] \nhas been provided in the wrong format or not at all. Therefore today's date at 23:59 will be set as the due date.`);
         }
     }
 
