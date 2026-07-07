@@ -193,11 +193,23 @@ svg {
 }
 
 main {
+    display: grid;
+    place-items: center;
     height: 100%;
 }
 
 nav>button[data-action="display-projects"] {
     position: relative;
+}
+
+dialog {
+    background-color: var(--background);
+    border: solid 2px var(--border);
+    border-radius: var(--radius-default);
+}
+
+legend {
+    border-radius: var(--radius-default);
 }
 
 /* --- CLASSES --- */
@@ -208,6 +220,7 @@ nav>button[data-action="display-projects"] {
     border: 2px solid var(--border);
     border-radius: var(--radius-default);
     height: 100%;
+    width: 100%;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
