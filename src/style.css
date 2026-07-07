@@ -134,6 +134,36 @@ h6 {
     --gap-default: 2rem;
 }
 
+.dark {
+    --background: hsl(240 10% 3.9%);
+    --foreground: hsl(0 0% 98%);
+
+    --card: hsl(240 10% 3.9%);
+    --card-foreground: hsl(0 0% 98%);
+
+    --popover: hsl(240 10% 3.9%);
+    --popover-foreground: hsl(0 0% 98%);
+
+    --border: hsl(240 3.7% 15.9%);
+    --input: hsl(240 3.7% 15.9%);
+    --ring: hsl(240 4.9% 83.9%);
+
+    --muted: hsl(240 3.7% 15.9%);
+    --muted-foreground: hsl(240 5% 64.9%);
+
+    --accent: hsl(240 3.7% 15.9%);
+    --accent-foreground: hsl(0 0% 98%);
+
+    --destructive: hsl(0 62.8% 30.6%);
+    --destructive-foreground: hsl(0 0% 98%);
+
+    --primary: #C8FF00;
+    --primary-foreground: #000000;
+
+    --secondary: #1A1F16;
+    --secondary-foreground: #E9ECEF;
+}
+
 /* --- ELEMENTS --- */
 
 * {
@@ -208,6 +238,22 @@ dialog {
     border-radius: var(--radius-default);
 }
 
+dialog input {
+    background-color: var(--background);
+}
+
+dialog ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+dialog ul li {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
 legend {
     border-radius: var(--radius-default);
 }
@@ -241,7 +287,8 @@ legend {
     color: var(--destructive);
 }
 
-.btn {
+.btn,
+.dropdown {
     all: unset;
     padding: 1rem;
     color: var(--primary-foreground);
@@ -369,34 +416,4 @@ legend {
 
 .hidden-icons {
     display: none;
-}
-
-.dark {
-    --background: hsl(240 10% 3.9%);
-    --foreground: hsl(0 0% 98%);
-
-    --card: hsl(240 10% 3.9%);
-    --card-foreground: hsl(0 0% 98%);
-
-    --popover: hsl(240 10% 3.9%);
-    --popover-foreground: hsl(0 0% 98%);
-
-    --border: hsl(240 3.7% 15.9%);
-    --input: hsl(240 3.7% 15.9%);
-    --ring: hsl(240 4.9% 83.9%);
-
-    --muted: hsl(240 3.7% 15.9%);
-    --muted-foreground: hsl(240 5% 64.9%);
-
-    --accent: hsl(240 3.7% 15.9%);
-    --accent-foreground: hsl(0 0% 98%);
-
-    --destructive: hsl(0 62.8% 30.6%);
-    --destructive-foreground: hsl(0 0% 98%);
-
-    --primary: #C8FF00;
-    --primary-foreground: #000000;
-
-    --secondary: #1A1F16;
-    --secondary-foreground: #E9ECEF;
 }

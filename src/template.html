@@ -66,10 +66,9 @@
 
     <main>
 
-        <dialog id="task-creation-dialog" class="task-creation-dialog">
+        <dialog id="task-creation-dialog" class="task-creation-dialog" closedby="any">
             <form action="" method="dialog">
                 <fieldset>
-                    <legend>Create a new task</legend>
                     <ul>
                         <li>
                             <label for="task-name">Name</label>
@@ -77,8 +76,7 @@
                         </li>
                         <li>
                             <label for="task-desc">Description</label>
-                            <input type="text" name="task-desc" id="task-desc"
-                                placeholder="f.e.: Wash the plates with dishsoap">
+                            <input type="text" name="task-desc" id="task-desc" placeholder="f.e.: Wash the plates">
                         </li>
                         <li>
                             <label for="task-due-date">Due-Date</label>
@@ -86,7 +84,7 @@
                         </li>
                         <li>
                             <label for="task-priority">Select the Priority Level</label>
-                            <select name="task-priority" id="task-priority">
+                            <select class="dropdown" name="task-priority" id="task-priority">
                                 <option value="high">High</option>
                                 <option value="medium" selected>Medium</option>
                                 <option value="low">Low</option>
@@ -94,7 +92,7 @@
                         </li>
                     </ul>
                 </fieldset>
-                <button type="submit">Add task</button>
+                <button class="btn" type="submit">Add task</button>
             </form>
         </dialog>
 
