@@ -29,12 +29,13 @@ export const mainController = (() => {
         if (taskIDs.length > 0) addTasksToProject(project.id, ...taskIDs);
     }
 
-    const eraseTasks = (...taskIDs) => {
+    const eraseTasks = (projectID, ...taskIDs) => {
         for (let projectArray of projectController.getProjects()) {
             const projectID = projectArray[0];
             removeTasksFromProject(projectID, ...taskIDs);
         }
         taskController.deleteTasks(...taskIDs);
+        renderTasks(projectID);
     }
 
     const addTasksToProject = (projectID, ...taskIDs) => {
@@ -50,6 +51,7 @@ export const mainController = (() => {
             const project = projectController.getProject(projectID);
             project.tasks.delete(taskID);
         }
+        renderTasks(projectID);
     }
 
     const moveTasksFromProject = (projectID1, projectID2, ...taskIDs) => {
@@ -57,6 +59,11 @@ export const mainController = (() => {
         addTasksToProject(projectID2, ...taskIDs);
     }
 
-    return { makeTask, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject }
+    const checkTask = (id) => {
+        taskController.checkTask(id);
+        screenController.checkTask(id);
+    }
+
+    return { makeTask, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask }
 
 })();

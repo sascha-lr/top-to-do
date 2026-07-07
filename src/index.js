@@ -7,10 +7,23 @@ const populatedContent = document.querySelector('[data-label="populated-content"
 const dateInput = document.querySelector('#task-creation-dialog input[type="datetime-local"]');
 const form = document.querySelector('#task-creation-dialog form');
 
+const performAction = (action, func, event) => {
+    if (event.target.closest(`[data-action="${action}"]`)) func();
+}
+
 contentContainer.addEventListener('click', (e) => {
-    if (e.target.closest('[data-action="add-task"]')) {
+    performAction('add-task', () => {
         dateInput.value = new Date().toISOString().split('T')[0] + 'T23:59';
-    }
+    }, e)
+    performAction('delete-forever', () => {
+        mainController.eraseTasks(document.querySelector('.project .active'), e.target.closest('[data-id]').dataset.id); //Placeholder querySelector
+    }, e)
+    performAction('delete', () => {
+        mainController.removeTasksFromProject(document.querySelector('.project .active'), e.target.closest('[data-id]').dataset.id); //Placeholder querySelector
+    }, e)
+    performAction('check', () => {
+        mainController.checkTask(e.target.closest('[data-id]').dataset.id);
+    }, e)
 })
 
 form.addEventListener('submit', () => {

@@ -58,6 +58,7 @@ export const screenController = (() => {
 
             const checkBox = document.createElement('input');
             checkBox.type = 'checkbox';
+            checkBox.dataset.action = 'check';
             checkBox.checked = task.isDone;
 
             const deleteBtn = document.querySelector('[data-label="hidden-icons"] button[data-action="delete"]').cloneNode(true);
@@ -85,9 +86,13 @@ export const screenController = (() => {
         drawTasks(tasks); //Not a real update
     }
 
+    const checkTask = (id) => {
+        document.querySelector(`[data-id="${id}"]`).classList.toggle('checked');
+    }
+
     // const updateNav = () => {
     // }
 
-    return { drawTasks, wipeScreen, updateScreen, getActive, changeActive };
+    return { drawTasks, wipeScreen, updateScreen, getActive, changeActive, checkTask };
 
 })();
