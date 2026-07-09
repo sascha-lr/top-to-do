@@ -24,6 +24,33 @@ contentContainer.addEventListener('click', (e) => {
     performAction('check', () => {
         mainController.checkTask(e.target.closest('[data-id]').dataset.id);
     }, e)
+    performAction('edit-task', () => {
+        const task = e.target.closest('[data-id]');
+        const button = e.target.closest('[data-action="edit-task"]');
+        const id = task.dataset.id;
+        button.classList.toggle('editing');
+        if (button.classList.contains('editing')) {
+            button.type = 'button';
+            task.querySelectorAll('input:not([type="checkbox"])').forEach((input) => {
+                input.readOnly = false;
+            })
+        } else {
+            button.type = 'submit';
+            task.querySelectorAll('input:not([type="checkbox"])').forEach((input) => {
+                input.readOnly = true;
+            })
+        }
+    }, e)
+})
+
+contentContainer.addEventListener('submit', (e) => {
+    const id = e.target.dataset.id;
+    const formData = new FormData(e.target);
+    const name = formData.get('task-name');
+    const desc = formData.get('task-desc');
+    const dueDate = formData.get('task-due-date');
+    const priority = formData.get('task-priority');
+    mainController.editTask(id, name, desc, dueDate, priority);
 })
 
 form.addEventListener('submit', () => {
@@ -33,8 +60,11 @@ form.addEventListener('submit', () => {
     const taskDueDate = formData.get('task-due-date');
     const taskPriority = formData.get('task-priority');
 
-    emptyContent.classList.remove('active');
-    populatedContent.classList.add('active');
+    if (emptyContent.classList.contains('active') && !populatedContent.classList.contains('active')) {
+        emptyContent.classList.remove('active');
+        populatedContent.classList.add('active');
+    }
+
     mainController.makeTask(taskName, taskDesc, taskDueDate, taskPriority);
 
     form.reset();

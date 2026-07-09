@@ -64,6 +64,13 @@ export const mainController = (() => {
         screenController.checkTask(id);
     }
 
-    return { makeTask, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask }
+    const editTask = (taskID, taskName, taskDesc, taskDueDate, taskPriority) => {
+        taskController.changeName(taskID, taskName);
+        taskController.changeDesc(taskID, taskDesc);
+        taskController.changeDueDate(taskID, taskDueDate);
+        taskController.changePriority(taskID, taskPriority);
+    }
+
+    return { makeTask, editTask, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask }
 
 })();

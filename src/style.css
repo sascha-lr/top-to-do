@@ -399,6 +399,11 @@ legend {
     all: unset;
 }
 
+.content-container .task input {
+    all: unset;
+    color: var(--foreground);
+}
+
 .content-container .task input[type="checkbox"] {
     appearance: none;
     border: 2px solid var(--border);
@@ -416,4 +421,18 @@ legend {
 
 .hidden-icons {
     display: none;
+}
+
+.checked {
+    text-decoration: line-through;
+}
+
+.btn[data-action="edit-task"] .checkmark,
+.btn[data-action="edit-task"].editing .pencil {
+    display: none;
+}
+
+.btn[data-action="edit-task"].editing .checkmark,
+.btn[data-action="edit-task"] .pencil {
+    display: flex;
 }
