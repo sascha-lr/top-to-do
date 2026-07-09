@@ -41,7 +41,7 @@ export class Task {
     }
 
     set dueDate(input) {
-        const regex = /^\d{4}-\d{2}-\d{2}T00:00$/;
+        const regex = /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d$/;
         if (regex.test(input)) {
             this.#dueDate = input;
         } else {
