@@ -18,7 +18,6 @@ export const screenController = (() => {
         btn.dataset.action = action;
 
         for (let svgPath of svgPaths) {
-
             const svgNameSpace = 'http://www.w3.org/2000/svg';
 
             const svg = document.createElementNS(svgNameSpace, 'svg');
@@ -46,27 +45,15 @@ export const screenController = (() => {
             taskContainer.dataset.priority = task.priority;
             taskContainer.classList.add(task.priority);
 
-            const taskNameContainer = document.createElement('div');
-            taskNameContainer.classList.add('name');
-            taskNameContainer.dataset.label = 'name';
-
             const taskName = document.createElement('input');
             taskName.value = task.name;
-            taskName.dataset.name = task.name;
             taskName.readOnly = true;
             taskName.name = 'task-name';
-            taskNameContainer.appendChild(taskName);
-
-            const taskDescContainer = document.createElement('div');
-            taskDescContainer.classList.add('desc');
-            taskDescContainer.dataset.label = 'desc';
 
             const taskDesc = document.createElement('input');
             taskDesc.value = task.desc;
-            taskDesc.dataset.desc = task.desc;
             taskDesc.readOnly = true;
             taskDesc.name = 'task-desc';
-            taskDescContainer.appendChild(taskDesc);
 
             const taskDueDate = document.createElement('input');
             taskDueDate.classList.add('due-date');
@@ -74,7 +61,6 @@ export const screenController = (() => {
             taskDueDate.value = task.dueDate;
             taskDueDate.readOnly = true;
             taskDueDate.name = 'task-due-date';
-            taskDueDate.dataset.dueDate = task.dueDate;
 
             const btnContainer = document.createElement('div');
             btnContainer.classList.add('btn-container');
@@ -95,8 +81,8 @@ export const screenController = (() => {
             btnContainer.appendChild(deleteBtn);
             btnContainer.appendChild(deleteForeverBtn);
 
-            taskContainer.appendChild(taskNameContainer);
-            taskContainer.appendChild(taskDescContainer);
+            taskContainer.appendChild(taskName);
+            taskContainer.appendChild(taskDesc);
             taskContainer.appendChild(taskDueDate);
             taskContainer.appendChild(btnContainer);
 
@@ -117,9 +103,26 @@ export const screenController = (() => {
         document.querySelector(`[data-id="${id}"]`).classList.toggle('checked');
     }
 
+    const toggleEditing = (target) => {
+        const task = target.closest('[data-id]');
+        const button = target.closest('[data-action="edit-task"]');
+        button.classList.toggle('editing');
+        if (button.classList.contains('editing')) {
+            button.type = 'button';
+            task.querySelectorAll('input:not([type="checkbox"])').forEach((input) => {
+                input.readOnly = false;
+            })
+        } else {
+            button.type = 'submit';
+            task.querySelectorAll('input:not([type="checkbox"])').forEach((input) => {
+                input.readOnly = true;
+            })
+        }
+    }
+
     // const updateNav = () => {
     // }
 
-    return { drawTasks, wipeScreen, updateScreen, getActive, changeActive, checkTask };
+    return { drawTasks, wipeScreen, updateScreen, getActive, changeActive, checkTask, toggleEditing };
 
 })();

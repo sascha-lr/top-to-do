@@ -71,6 +71,10 @@ export const mainController = (() => {
         taskController.changePriority(taskID, taskPriority);
     }
 
-    return { makeTask, editTask, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask }
+    const toggleEditing = (target) => {
+        screenController.toggleEditing(target);
+    }
+
+    return { makeTask, editTask, toggleEditing, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask }
 
 })();
