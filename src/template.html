@@ -21,7 +21,7 @@
             </svg>
             All Tasks
         </button>
-        <button data-action="display-projects">
+        <button data-action="display-projects" command="show-modal" commandfor="project-selection-dialog">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
                 <path
                     d="M127-167q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47Zm480 0q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47Zm-310.5-56.5Q320-247 320-280t-23.5-56.5Q273-360 240-360t-56.5 23.5Q160-313 160-280t23.5 56.5Q207-200 240-200t56.5-23.5Zm480 0Q800-247 800-280t-23.5-56.5Q753-360 720-360t-56.5 23.5Q640-313 640-280t23.5 56.5Q687-200 720-200t56.5-23.5ZM367-567q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47Zm169.5-56.5Q560-647 560-680t-23.5-56.5Q513-760 480-760t-56.5 23.5Q400-713 400-680t23.5 56.5Q447-600 480-600t56.5-23.5ZM480-680Zm240 400Zm-480 0Z" />
@@ -42,6 +42,10 @@
             Search
         </button>
     </nav>
+
+    <dialog id="project-selection-dialog" class="project-selection-dialog" closedby="any">
+        <button class="small btn" data-action="add-project">Add Project </button>
+    </dialog>
 
     <main>
 
@@ -64,7 +68,7 @@
                         </li>
                         <li>
                             <label for="task-priority">Select the Priority Level</label>
-                            <select class="dropdown" name="task-priority" id="task-priority">
+                            <select class="small btn dropdown" name="task-priority" id="task-priority">
                                 <option value="high">High</option>
                                 <option value="medium" selected>Medium</option>
                                 <option value="low">Low</option>
@@ -72,7 +76,7 @@
                         </li>
                     </ul>
                 </fieldset>
-                <button class="btn" type="submit">Add task</button>
+                <button class="small btn" type="submit">Add task</button>
             </form>
         </dialog>
 

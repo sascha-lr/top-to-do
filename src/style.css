@@ -228,10 +228,6 @@ main {
     height: 100%;
 }
 
-nav>button[data-action="display-projects"] {
-    position: relative;
-}
-
 dialog {
     background-color: var(--background);
     border: solid 2px var(--border);
@@ -287,8 +283,7 @@ legend {
     color: var(--destructive);
 }
 
-.btn,
-.dropdown {
+.btn {
     all: unset;
     padding: 1rem;
     color: var(--primary-foreground);
@@ -391,8 +386,9 @@ legend {
     justify-content: end;
 }
 
-.content-container .task .small.btn {
-    padding: .25rem;
+.small.btn,
+.dropdown {
+    padding: .25rem .5rem;
 }
 
 .content-container .task .due-date {
@@ -425,6 +421,32 @@ legend {
 
 .checked {
     text-decoration: line-through;
+}
+
+.small.btn.option {
+    background-color: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    display: flex;
+}
+
+.small.btn.option:hover {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: none;
+    border: 2px solid transparent;
+}
+
+button[data-action="display-projects"] {
+    anchor-name: --project-button;
+}
+
+.project-selection-dialog {
+    margin-top: 2.5rem;
+    position: absolute;
+    position-anchor: --project-button;
+    position-area: bottom center;
+    max-width: max-content;
 }
 
 .btn[data-action="edit-task"] .checkmark,
