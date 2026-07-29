@@ -196,11 +196,9 @@ nav {
     display: flex;
 }
 
-nav>button:nth-child(1)::before {
-    content: none;
-}
 
-nav>button {
+nav>button,
+nav>a {
 
     --icon-gap: .5rem;
 

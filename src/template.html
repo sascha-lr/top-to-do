@@ -14,13 +14,13 @@
 <body class="dark">
 
     <nav>
-        <button data-action="display-all">
+        <a data-action="display-all" href="#">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
                 <path
                     d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
             </svg>
             All Tasks
-        </button>
+        </a>
         <button data-action="display-projects" command="show-modal" commandfor="project-selection-dialog">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
                 <path
@@ -44,7 +44,28 @@
     </nav>
 
     <dialog id="project-selection-dialog" class="project-selection-dialog" closedby="any">
-        <button class="small btn" data-action="add-project">Add Project </button>
+        <button class="small btn" data-action="add-project" command="show-modal"
+            commandfor="project-creation-dialog">Add Project</button>
+    </dialog>
+
+    <dialog id="project-creation-dialog" class="project-creation-dialog" closedby="any">
+        <form method="dialog">
+            <fieldset>
+                <ul>
+                    <li>
+                        <label for="project-name">Name</label>
+                        <input type="text" name="project-name" id="project-name-name" placeholder="f.e.: Household"
+                            minlength="3" maxlength="20" required>
+                    </li>
+                    <li>
+                        <label for="project-desc">Description</label>
+                        <input type="text" name="project-desc" id="project-desc"
+                            placeholder="f.e.: Collection of household chores">
+                    </li>
+                </ul>
+            </fieldset>
+            <button class="small btn" type="submit">Add Project</button>
+        </form>
     </dialog>
 
     <main>
