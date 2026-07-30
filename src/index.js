@@ -1,31 +1,40 @@
 import "./style.css";
 import { mainController } from "./elements/mainController.js";
 
+const body = document.querySelector('body');
 const contentContainer = document.querySelector('[data-label="content-container"]');
 const emptyContent = document.querySelector('[data-label="empty-content"]');
 const populatedContent = document.querySelector('[data-label="populated-content"]');
 const dateInput = document.querySelector('#task-creation-dialog input[type="datetime-local"]');
-const form = document.querySelector('#task-creation-dialog form');
+const taskCreationForm = document.querySelector('#task-creation-dialog form');
+const projectCreationForm = document.querySelector('#project-creation-dialog form');
+
+const currentProjectID = () => {
+    return window.location.hash.split('#')[1];
+};
 
 const performAction = (action, func, event) => {
     if (event.target.closest(`[data-action="${action}"]`)) func();
 }
 
-contentContainer.addEventListener('click', (e) => {
+body.addEventListener('click', (e) => {
     performAction('add-task', () => {
         dateInput.value = new Date().toISOString().split('T')[0] + 'T23:59';
     }, e)
     performAction('delete-forever', () => {
-        mainController.eraseTasks(document.querySelector('.project .active'), e.target.closest('[data-id]').dataset.id); //Placeholder querySelector
+        mainController.eraseTasks(currentProjectID(), e.target.closest('[data-id]').dataset.id);
     }, e)
     performAction('delete', () => {
-        mainController.removeTasksFromProject(document.querySelector('.project .active'), e.target.closest('[data-id]').dataset.id); //Placeholder querySelector
+        mainController.removeTasksFromProject(currentProjectID(), e.target.closest('[data-id]').dataset.id);
     }, e)
     performAction('check', () => {
         mainController.checkTask(e.target.closest('[data-id]').dataset.id);
     }, e)
     performAction('edit-task', () => {
         mainController.toggleEditing(e.target);
+    }, e)
+    performAction('switch-project', () => {
+        setTimeout(() => { mainController.switchProject(currentProjectID()) }, 1);
     }, e)
 })
 
@@ -39,8 +48,8 @@ contentContainer.addEventListener('submit', (e) => {
     mainController.editTask(taskID, taskName, taskDesc, taskDueDate, taskPriority);
 })
 
-form.addEventListener('submit', () => {
-    const formData = new FormData(form);
+taskCreationForm.addEventListener('submit', () => {
+    const formData = new FormData(taskCreationForm);
     const taskName = formData.get('task-name');
     const taskDesc = formData.get('task-desc');
     const taskDueDate = formData.get('task-due-date');
@@ -51,7 +60,15 @@ form.addEventListener('submit', () => {
         populatedContent.classList.add('active');
     }
 
-    mainController.makeTask(taskName, taskDesc, taskDueDate, taskPriority);
+    mainController.makeTask(taskName, taskDesc, taskDueDate, taskPriority, currentProjectID());
 
-    form.reset();
+    taskCreationForm.reset();
+})
+
+projectCreationForm.addEventListener('submit', () => {
+    const formData = new FormData(projectCreationForm);
+    const projectName = formData.get('project-name');
+    const projectDesc = formData.get('project-desc');
+
+    mainController.makeProject(projectName, projectDesc);
 })

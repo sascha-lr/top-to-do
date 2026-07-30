@@ -5,28 +5,20 @@ import { screenController } from "./screenController.js";
 export const mainController = (() => {
 
     const renderTasks = (projectID) => {
-        screenController.changeActive(projectID);
-        const tasks = projectID ? projectController.getProjectTasks(projectID) : taskController.getTasks();
-        screenController.updateScreen(tasks);
+        const tasks = projectController.getProject(projectID) ? projectController.getProjectTasks(projectID) : taskController.getTasks();
+        screenController.updateTaskScreen(tasks, projectController.getProject(projectID));
     }
 
-    const makeTask = (taskName, taskDesc, taskDueDate, taskPriority, taskIsDone, projectID) => {
-        const task = taskController.addTask(taskName, taskDesc, taskDueDate, taskPriority, taskIsDone);
-        if (projectID) addTasksToProject(projectID, task.id);
+    const makeTask = (taskName, taskDesc, taskDueDate, taskPriority, projectID) => {
+        const task = taskController.addTask(taskName, taskDesc, taskDueDate, taskPriority);
+        if (projectController.getProject(projectID)) addTasksToProject(projectID, task.id);
         renderTasks(projectID);
     }
-
-    // Project Creation Logic
-    // let projectID = screenController.checkIfActive();
-    // if (projectName) {
-    //     const project = projectController.addProject(projectName, projectDesc);
-    //     projectID = project.id;
-    //     addTasksToProject([task.id], projectID);
-    // }
 
     const makeProject = (projectName, projectDesc, ...taskIDs) => {
         const project = projectController.addProject(projectName, projectDesc);
         if (taskIDs.length > 0) addTasksToProject(project.id, ...taskIDs);
+        screenController.updateProjectScreen(project);
     }
 
     const eraseTasks = (projectID, ...taskIDs) => {
@@ -49,7 +41,7 @@ export const mainController = (() => {
     const removeTasksFromProject = (projectID, ...taskIDs) => {
         for (let taskID of taskIDs) {
             const project = projectController.getProject(projectID);
-            project.tasks.delete(taskID);
+            if (project) project.tasks.delete(taskID);
         }
         renderTasks(projectID);
     }
@@ -75,6 +67,20 @@ export const mainController = (() => {
         screenController.toggleEditing(target);
     }
 
-    return { makeTask, editTask, toggleEditing, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask }
+    const changeProjectName = (projectID) => {
+        const projectName = projectID ? projectController.getProject(projectID).name : 'All Tasks';
+        screenController.changeProjectName(projectName);
+    }
+
+    const switchProject = (projectID) => {
+        renderTasks(projectID);
+        changeProjectName(projectID);
+    }
+
+    const firstLoad = (() => {
+        renderTasks(window.location.hash.split('#')[1]);
+    })();
+
+    return { makeTask, editTask, toggleEditing, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask, changeProjectName, switchProject }
 
 })();
