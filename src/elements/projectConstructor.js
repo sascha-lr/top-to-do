@@ -1,20 +1,22 @@
 export class Project {
 
-    #tasks = new Map();
     #desc = '';
     #id = crypto.randomUUID();
 
-    constructor(name, desc) {
+    constructor(name, desc, id) {
         this.name = name;
         this.desc = desc;
+        this.id = id;
+        this.tasks = localStorage[this.id];
     }
 
     get tasks() {
-        return this.#tasks;
+        return this.tasks;
     }
 
     set tasks(input) {
-        throw new Error(`You cannot reassign the tasks variable.\n[Project Name: ${this.name}, \nProject ID: ${this.id}]`);
+        if (!localStorage[this.id]) localStorage[this.id] = '[]';
+        if (input) throw new Error(`You cannot reassign the tasks variable.\n[Project Name: ${this.name}, \nProject ID: ${this.id}]`);
     }
 
     get desc() {
@@ -22,7 +24,7 @@ export class Project {
     }
 
     set desc(input) {
-        if (input) this.#desc = input;
+        this.#desc = input;
     }
 
     get id() {
@@ -30,6 +32,12 @@ export class Project {
     }
 
     set id(input) {
-        throw new Error(`You cannot change ID of the project manually.\n[Project Name: ${this.name}, \nProject ID:${this.id}]`);
+        if (!input) return;
+        const regex = /^[a-z,0-9,-]{36,36}$/;
+        if (regex.test(input)) {
+            this.#id = input;
+        } else {
+            throw new Error(`Invalid UUID assignment to \n[Project Name: ${this.name}]!`);
+        }
     }
 }

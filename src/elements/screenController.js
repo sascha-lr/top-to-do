@@ -1,6 +1,8 @@
-export const screenController = (() => {
+const allTasksContainer = document.querySelector('[data-label="task-container"]');
+const emptyContent = document.querySelector('[data-label="empty-content"]');
+const populatedContent = document.querySelector('[data-label="populated-content"]');
 
-    const allTasksContainer = document.querySelector('[data-label="task-container"]');
+export const screenController = (() => {
 
     const createButton = (className, action, ...svgPaths) => {
         const btn = document.createElement('button');
@@ -26,6 +28,12 @@ export const screenController = (() => {
     }
 
     const drawTasks = (tasks, isProjectActive) => {
+
+        if (tasks.size > 0 && emptyContent.classList.contains('active') && !populatedContent.classList.contains('active')) {
+            emptyContent.classList.remove('active');
+            populatedContent.classList.add('active');
+        }
+
         for (let taskArray of tasks) {
             const task = taskArray[1];
 
@@ -130,9 +138,6 @@ export const screenController = (() => {
 
         projectSelectionDialog.insertBefore(link, projectSelectionDialog.querySelector('button[data-action="add-project"]'));
     }
-
-    // const updateNav = () => {
-    // }
 
     return { drawTasks, wipeScreen, updateTaskScreen, updateProjectScreen, checkTask, toggleEditing, changeProjectName };
 

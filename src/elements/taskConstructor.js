@@ -3,17 +3,19 @@ export class Task {
     #name;
     #desc = 'This task has no description.';
     #dueDate = new Date().toISOString().split('T')[0] + 'T23:59';
-    #created = new Date().toISOString().slice(0, -8);
+    #createdDate = new Date().toISOString().slice(0, -8);
     #priority = 'medium';
     #isDone = false;
     #id = crypto.randomUUID();
 
-    constructor(name, desc, dueDate, priority, isDone) {
+    constructor(name, desc, dueDate, priority, isDone, id, createdDate) {
         this.name = name;
         this.desc = desc;
         this.dueDate = dueDate;
         this.priority = priority;
         this.isDone = isDone;
+        this.id = id;
+        this.createdDate = createdDate;
     }
 
     get name() {
@@ -41,7 +43,7 @@ export class Task {
     }
 
     set dueDate(input) {
-        const regex = /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d$/;
+        const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d$/;
         if (regex.test(input)) {
             this.#dueDate = input;
         } else {
@@ -71,12 +73,18 @@ export class Task {
         if (input === true || input === false) this.#isDone = input;
     }
 
-    get created() {
-        return this.#created;
+    get createdDate() {
+        return this.#createdDate;
     }
 
-    set created(input) {
-        throw new Error('You cannot change the date when the task was created.');
+    set createdDate(input) {
+        const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):[0-5]\d$/;
+        if (!input) return;
+        if (regex.test(input)) {
+            this.#createdDate = input;
+        } else {
+            throw new Error(`The creation date of \n[Task Name: ${this.name}, \nTask ID: ${this.id}]\nhas been provided in the wrong format or not at all.`);
+        }
     }
 
     get id() {
@@ -84,6 +92,12 @@ export class Task {
     }
 
     set id(input) {
-        throw new Error('You cannot change the ID of the task manually.');
+        const regex = /^[a-z,0-9,-]{36,36}$/;
+        if (!input) return;
+        if (regex.test(input)) {
+            this.#id = input;
+        } else {
+            throw new Error(`Invalid UUID assignment to \n[Task Name: ${this.name}]!`);
+        }
     }
 }

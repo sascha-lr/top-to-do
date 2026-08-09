@@ -2,46 +2,55 @@ import { Project } from "./projectConstructor.js";
 
 export const projectController = (() => {
 
-    const projects = new Map();
+    if (!localStorage['all-projects']) localStorage['all-projects'] = '[]';
 
-    const addProject = (name, desc) => {
-        const project = new Project(name, desc);
-        projects.set(project.id, project);
+    const addProject = (name, desc, id) => {
+        const project = new Project(name, desc, id);
+        const map = getProjects();
+
+        const projectCopy = {
+            name: project.name,
+            desc: project.desc,
+            id: project.id,
+        }
+
+        map.set(project.id, projectCopy);
+        setProjects(map);
+
         return project;
     }
 
     const getProject = (id) => {
-        return projects.get(id);
+        return getProjects().get(id);
     }
 
-    const getProjects = () => projects;
+    const getProjects = () => new Map(JSON.parse(localStorage['all-projects']));
 
-    const getProjectTask = (projectID, taskID) => {
-        const project = getProject(projectID);
-        return project.tasks.get(taskID);
-    }
+    const setProjects = (input) => localStorage['all-projects'] = JSON.stringify(Array.from(input));
 
-    const getProjectTasks = (id) => {
-        const project = getProject(id);
-        return project.tasks;
-    }
+    const getProjectTask = (projectID, taskID) => getProjectTasks(projectID).get(taskID);
 
-    const changeName = (id, name) => {
-        const project = getProject(id);
+    const getProjectTasks = (projectID) => new Map(JSON.parse(localStorage[projectID]));
+
+    const setProjectTasks = (projectID, input) => localStorage[projectID] = JSON.stringify(Array.from(input));
+
+    const changeProject = (id, name, desc) => {
+        const map = getProjects();
+        const project = map.get(id);
+        new Project(name, desc);
         project.name = name;
-    }
-
-    const changeDesc = (id, desc) => {
-        const project = getProject(id);
         project.desc = desc;
+        setProjects(map);
     }
 
-    const deleteProjects = ([...ids]) => {
+    const deleteProjects = (...ids) => {
+        const map = getProjects();
         for (let id of ids) {
-            projects.delete(id);
+            map.delete(id);
         }
+        setProjects(map);
     }
 
-    return { addProject, getProject, getProjects, getProjectTask, getProjectTasks, changeName, changeDesc, deleteProjects };
+    return { addProject, getProject, getProjects, getProjectTask, getProjectTasks, setProjectTasks, changeProject, deleteProjects };
 
 })();

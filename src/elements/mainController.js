@@ -5,44 +5,49 @@ import { screenController } from "./screenController.js";
 export const mainController = (() => {
 
     const renderTasks = (projectID) => {
-        const tasks = projectController.getProject(projectID) ? projectController.getProjectTasks(projectID) : taskController.getTasks();
+        const tasks = localStorage[projectID] ? projectController.getProjectTasks(projectID) : taskController.getTasks();
         screenController.updateTaskScreen(tasks, projectController.getProject(projectID));
     }
 
-    const makeTask = (taskName, taskDesc, taskDueDate, taskPriority, projectID) => {
-        const task = taskController.addTask(taskName, taskDesc, taskDueDate, taskPriority);
-        if (projectController.getProject(projectID)) addTasksToProject(projectID, task.id);
+    const renderProjects = (projects) => {
+        projects.forEach(project => {
+            screenController.updateProjectScreen(project);
+        });
+    }
+
+    const makeTask = (projectID, taskName, taskDesc, taskDueDate, taskPriority, taskIsDone, taskID, taskCreatedDate) => {
+        const task = taskController.addTask(taskName, taskDesc, taskDueDate, taskPriority, taskIsDone, taskID, taskCreatedDate);
+        if (localStorage[projectID]) addTasksToProject(projectID, task.id);
         renderTasks(projectID);
     }
 
-    const makeProject = (projectName, projectDesc, ...taskIDs) => {
-        const project = projectController.addProject(projectName, projectDesc);
+    const makeProject = (projectName, projectDesc, projectID, ...taskIDs) => {
+        const project = projectController.addProject(projectName, projectDesc, projectID);
         if (taskIDs.length > 0) addTasksToProject(project.id, ...taskIDs);
         screenController.updateProjectScreen(project);
     }
 
     const eraseTasks = (projectID, ...taskIDs) => {
-        for (let projectArray of projectController.getProjects()) {
-            const projectID = projectArray[0];
-            removeTasksFromProject(projectID, ...taskIDs);
-        }
+        if (localStorage[projectID]) removeTasksFromProject(projectID, ...taskIDs);
         taskController.deleteTasks(...taskIDs);
         renderTasks(projectID);
     }
 
     const addTasksToProject = (projectID, ...taskIDs) => {
+        const map = projectController.getProjectTasks(projectID);
         for (let taskID of taskIDs) {
             const task = taskController.getTask(taskID);
-            const project = projectController.getProject(projectID);
-            project.tasks.set(taskID, task);
+            map.set(task.id, task)
         }
+        projectController.setProjectTasks(projectID, map);
     }
 
     const removeTasksFromProject = (projectID, ...taskIDs) => {
+        const map = projectController.getProjectTasks(projectID);
         for (let taskID of taskIDs) {
-            const project = projectController.getProject(projectID);
-            if (project) project.tasks.delete(taskID);
+            map.delete(taskID);
         }
+        projectController.setProjectTasks(projectID, map)
         renderTasks(projectID);
     }
 
@@ -57,10 +62,17 @@ export const mainController = (() => {
     }
 
     const editTask = (taskID, taskName, taskDesc, taskDueDate, taskPriority) => {
-        taskController.changeName(taskID, taskName);
-        taskController.changeDesc(taskID, taskDesc);
-        taskController.changeDueDate(taskID, taskDueDate);
-        taskController.changePriority(taskID, taskPriority);
+        taskController.changeTask(taskID, taskName, taskDesc, taskDueDate, taskPriority);
+
+        const task = taskController.getTask(taskID);
+        const projects = projectController.getProjects();
+        projects.forEach((project) => {
+            const map = projectController.getProjectTasks(project.id);
+            if (projectController.getProjectTask(project.id, taskID)) {
+                map.set(task.id, task);
+                projectController.setProjectTasks(project.id, map);
+            }
+        })
     }
 
     const toggleEditing = (target) => {
@@ -79,6 +91,8 @@ export const mainController = (() => {
 
     const firstLoad = (() => {
         renderTasks(window.location.hash.split('#')[1]);
+        changeProjectName(window.location.hash.split('#')[1]);
+        renderProjects(projectController.getProjects());
     })();
 
     return { makeTask, editTask, toggleEditing, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask, changeProjectName, switchProject }

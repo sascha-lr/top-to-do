@@ -2,51 +2,62 @@ import { Task } from "./taskConstructor.js";
 
 export const taskController = (() => {
 
-    const tasks = new Map();
+    if (!localStorage['all-tasks']) localStorage['all-tasks'] = '[]';
 
-    const addTask = (name, desc, dueDate, priority, isDone) => {
-        const task = new Task(name, desc, dueDate, priority, isDone);
-        tasks.set(task.id, task);
+    const addTask = (name, desc, dueDate, priority, isDone, id, createdDate) => {
+        const task = new Task(name, desc, dueDate, priority, isDone, id, createdDate);
+        const map = getTasks();
+
+        const taskCopy = {
+            name: task.name,
+            desc: task.desc,
+            dueDate: task.dueDate,
+            priority: task.priority,
+            isDone: task.isDone,
+            id: task.id,
+            createdDate: task.createdDate
+        }
+
+        map.set(task.id, taskCopy);
+        setTasks(map);
+
         return task;
     }
 
     const getTask = (id) => {
-        return tasks.get(id);
+        return getTasks().get(id);
     }
 
-    const getTasks = () => tasks;
+    const getTasks = () => new Map(JSON.parse(localStorage['all-tasks']));
 
-    const changeName = (id, name) => {
-        const task = getTask(id);
+    const setTasks = (input) => localStorage['all-tasks'] = JSON.stringify(Array.from(input));
+
+    const changeTask = (id, name, desc, dueDate, priority) => {
+        const map = getTasks();
+        const task = map.get(id);
+        new Task(name, desc, dueDate, priority);
         task.name = name;
-    }
-
-    const changeDesc = (id, desc) => {
-        const task = getTask(id);
         task.desc = desc;
-    }
-
-    const changeDueDate = (id, date) => {
-        const task = getTask(id);
-        task.dueDate = date;
-    }
-
-    const changePriority = (id, priority) => {
-        const task = getTask(id);
+        task.dueDate = dueDate;
         task.priority = priority;
+        setTasks(map);
     }
 
     const checkTask = (id) => {
-        const task = getTask(id);
+        const map = getTasks();
+        const task = map.get(id);
         task.isDone = !task.isDone;
+        setTasks(map);
     }
 
     const deleteTasks = (...ids) => {
+        const map = getTasks();
         for (let id of ids) {
-            tasks.delete(id);
+            map.delete(id);
         }
+        setTasks(map);
     }
 
-    return { addTask, getTask, getTasks, changeName, changeDesc, changeDueDate, changePriority, checkTask, deleteTasks };
+    return { addTask, getTask, getTasks, changeTask, checkTask, deleteTasks };
 
 })();

@@ -3,8 +3,6 @@ import { mainController } from "./elements/mainController.js";
 
 const body = document.querySelector('body');
 const contentContainer = document.querySelector('[data-label="content-container"]');
-const emptyContent = document.querySelector('[data-label="empty-content"]');
-const populatedContent = document.querySelector('[data-label="populated-content"]');
 const dateInput = document.querySelector('#task-creation-dialog input[type="datetime-local"]');
 const taskCreationForm = document.querySelector('#task-creation-dialog form');
 const projectCreationForm = document.querySelector('#project-creation-dialog form');
@@ -55,12 +53,7 @@ taskCreationForm.addEventListener('submit', () => {
     const taskDueDate = formData.get('task-due-date');
     const taskPriority = formData.get('task-priority');
 
-    if (emptyContent.classList.contains('active') && !populatedContent.classList.contains('active')) {
-        emptyContent.classList.remove('active');
-        populatedContent.classList.add('active');
-    }
-
-    mainController.makeTask(taskName, taskDesc, taskDueDate, taskPriority, currentProjectID());
+    mainController.makeTask(currentProjectID(), taskName, taskDesc, taskDueDate, taskPriority);
 
     taskCreationForm.reset();
 })
