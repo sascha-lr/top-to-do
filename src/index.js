@@ -1,5 +1,5 @@
 import "./style.css";
-import { mainController } from "./elements/mainController.js";
+import * as mainController from "./elements/mainController.js";
 
 const body = document.querySelector('body');
 const contentContainer = document.querySelector('[data-label="content-container"]');

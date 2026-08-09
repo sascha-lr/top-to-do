@@ -1,56 +1,52 @@
 import { Project } from "./projectConstructor.js";
 
-export const projectController = (() => {
+if (!localStorage['all-projects']) localStorage['all-projects'] = '[]';
 
-    if (!localStorage['all-projects']) localStorage['all-projects'] = '[]';
+const addProject = (name, desc, id) => {
+    const project = new Project(name, desc, id);
+    const map = getProjects();
 
-    const addProject = (name, desc, id) => {
-        const project = new Project(name, desc, id);
-        const map = getProjects();
-
-        const projectCopy = {
-            name: project.name,
-            desc: project.desc,
-            id: project.id,
-        }
-
-        map.set(project.id, projectCopy);
-        setProjects(map);
-
-        return project;
+    const projectCopy = {
+        name: project.name,
+        desc: project.desc,
+        id: project.id,
     }
 
-    const getProject = (id) => {
-        return getProjects().get(id);
+    map.set(project.id, projectCopy);
+    setProjects(map);
+
+    return project;
+}
+
+const getProject = (id) => {
+    return getProjects().get(id);
+}
+
+const getProjects = () => new Map(JSON.parse(localStorage['all-projects']));
+
+const setProjects = (input) => localStorage['all-projects'] = JSON.stringify(Array.from(input));
+
+const getProjectTask = (projectID, taskID) => getProjectTasks(projectID).get(taskID);
+
+const getProjectTasks = (projectID) => new Map(JSON.parse(localStorage[projectID]));
+
+const setProjectTasks = (projectID, input) => localStorage[projectID] = JSON.stringify(Array.from(input));
+
+const changeProject = (id, name, desc) => {
+    const map = getProjects();
+    const project = map.get(id);
+    new Project(name, desc);
+    project.name = name;
+    project.desc = desc;
+    setProjects(map);
+}
+
+const deleteProjects = (...ids) => {
+    const map = getProjects();
+    for (let id of ids) {
+        map.delete(id);
     }
+    setProjects(map);
+}
 
-    const getProjects = () => new Map(JSON.parse(localStorage['all-projects']));
-
-    const setProjects = (input) => localStorage['all-projects'] = JSON.stringify(Array.from(input));
-
-    const getProjectTask = (projectID, taskID) => getProjectTasks(projectID).get(taskID);
-
-    const getProjectTasks = (projectID) => new Map(JSON.parse(localStorage[projectID]));
-
-    const setProjectTasks = (projectID, input) => localStorage[projectID] = JSON.stringify(Array.from(input));
-
-    const changeProject = (id, name, desc) => {
-        const map = getProjects();
-        const project = map.get(id);
-        new Project(name, desc);
-        project.name = name;
-        project.desc = desc;
-        setProjects(map);
-    }
-
-    const deleteProjects = (...ids) => {
-        const map = getProjects();
-        for (let id of ids) {
-            map.delete(id);
-        }
-        setProjects(map);
-    }
-
-    return { addProject, getProject, getProjects, getProjectTask, getProjectTasks, setProjectTasks, changeProject, deleteProjects };
-
-})();
+export { addProject, getProject, getProjects, getProjectTask, getProjectTasks, setProjectTasks, changeProject, deleteProjects };
