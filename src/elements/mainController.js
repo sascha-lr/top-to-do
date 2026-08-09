@@ -26,8 +26,17 @@ const makeProject = (projectName, projectDesc, projectID, ...taskIDs) => {
 }
 
 const eraseTasks = (projectID, ...taskIDs) => {
-    if (localStorage[projectID]) removeTasksFromProject(projectID, ...taskIDs);
     taskController.deleteTasks(...taskIDs);
+    const projects = projectController.getProjects();
+    projects.forEach((project) => {
+        const map = projectController.getProjectTasks(project.id);
+        for (let taskID of taskIDs) {
+            if (projectController.getProjectTask(project.id, taskID)) {
+                map.delete(taskID);
+                projectController.setProjectTasks(project.id, map);
+            }
+        }
+    })
     renderTasks(projectID);
 }
 
@@ -78,7 +87,7 @@ const toggleEditing = (target) => {
 }
 
 const changeProjectName = (projectID) => {
-    const projectName = projectID ? projectController.getProject(projectID).name : 'All Tasks';
+    const projectName = localStorage[projectID] ? projectController.getProject(projectID).name : 'All Tasks';
     screenController.changeProjectName(projectName);
 }
 
