@@ -63,6 +63,15 @@ const moveTasksFromProject = (projectID1, projectID2, ...taskIDs) => {
 
 const checkTask = (id) => {
     taskController.checkTask(id);
+    const task = taskController.getTask(id);
+    const projects = projectController.getProjects();
+    projects.forEach((project) => {
+        const map = projectController.getProjectTasks(project.id);
+        if (projectController.getProjectTask(project.id, id)) {
+            map.set(task.id, task);
+            projectController.setProjectTasks(project.id, map);
+        }
+    });
     screenController.checkTask(id);
 }
 
