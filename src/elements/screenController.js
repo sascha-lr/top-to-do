@@ -1,6 +1,7 @@
 const allTasksContainer = document.querySelector('[data-label="task-container"]');
 const emptyContent = document.querySelector('[data-label="empty-content"]');
 const populatedContent = document.querySelector('[data-label="populated-content"]');
+const projectSelectionContainer = document.querySelector('#project-selection-dialog>.project-container');
 
 const createButton = (className, action, ...svgPaths) => {
     const btn = document.createElement('button');
@@ -125,17 +126,31 @@ const changeProjectName = (projectName) => {
     document.querySelector('[data-label="project-name"]').innerText = projectName;
 }
 
-const updateProjectScreen = (project) => {
-    const projectSelectionDialog = document.querySelector('#project-selection-dialog');
+const drawProjects = (projects) => {
 
-    const link = document.createElement('a');
-    link.href = `#${project.id}`;
-    link.innerText = project.name;
-    link.className = 'small btn option';
-    link.dataset.action = 'switch-project';
+    projects.forEach(project => {
+        const link = document.createElement('a');
+        const deleteBtn = createButton('small btn', 'delete', 'M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z');
+        deleteBtn.dataset.action = 'delete-project';
 
-    projectSelectionDialog.insertBefore(link, projectSelectionDialog.querySelector('button[data-action="add-project"]'));
+        link.href = `#${project.id}`;
+        link.innerText = project.name;
+        link.className = 'small btn option';
+        link.dataset.action = 'switch-project';
+        link.appendChild(deleteBtn);
+
+        projectSelectionContainer.appendChild(link);
+    });
 }
 
-export { drawTasks, wipeScreen, updateTaskScreen, updateProjectScreen, checkTask, toggleEditing, changeProjectName };
+const wipeProjectScreen = () => {
+    projectSelectionContainer.textContent = '';
+}
+
+const updateProjectScreen = (projects) => {
+    wipeProjectScreen();
+    drawProjects(projects);
+}
+
+export { updateTaskScreen, updateProjectScreen, checkTask, toggleEditing, changeProjectName };
 

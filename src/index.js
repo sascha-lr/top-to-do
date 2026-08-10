@@ -34,6 +34,9 @@ body.addEventListener('click', (e) => {
     performAction('switch-project', () => {
         setTimeout(() => { mainController.switchProject(currentProjectID()) }, 1);
     }, e)
+    performAction('delete-project', () => {
+        mainController.eraseProject(e.target.closest('[href]').hash.split('#')[1]);
+    }, e)
 })
 
 contentContainer.addEventListener('submit', (e) => {

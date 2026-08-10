@@ -44,6 +44,7 @@ const changeProject = (id, name, desc) => {
 const deleteProjects = (...ids) => {
     const map = getProjects();
     for (let id of ids) {
+        localStorage.removeItem(id);
         map.delete(id);
     }
     setProjects(map);
