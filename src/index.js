@@ -6,6 +6,7 @@ const contentContainer = document.querySelector('[data-label="content-container"
 const dateInput = document.querySelector('#task-creation-dialog input[type="datetime-local"]');
 const taskCreationForm = document.querySelector('#task-creation-dialog form');
 const projectCreationForm = document.querySelector('#project-creation-dialog form');
+const selectionButton = document.querySelector('.btn[data-action="select-tasks"]');
 
 const currentProjectID = () => {
     return window.location.hash.split('#')[1];
@@ -15,28 +16,66 @@ const performAction = (action, func, event) => {
     if (event.target.closest(`[data-action="${action}"]`)) func();
 }
 
+let selection = [];
+
+const toggleSelection = () => {
+    for (let taskID of selection) {
+        if (document.querySelector(`.task[data-id="${taskID}"]`)) document.querySelector(`.task[data-id="${taskID}"]`).classList.remove('selected');
+    }
+    selection = [];
+    contentContainer.classList.toggle('selection');
+    contentContainer.classList.contains('selection') ? selectionButton.textContent = 'Stop Selecting' : selectionButton.textContent = 'Select Tasks';
+    if (localStorage[currentProjectID()] && contentContainer.classList.contains('selection')) {
+        document.querySelector('.content-container.selection>.populated.content>.btn-container>.btn[data-action="delete"]').classList.remove('hidden');
+    } else {
+        document.querySelector('.content-container>.populated.content>.btn-container>.btn[data-action="delete"]').classList.add('hidden');
+    }
+}
+
+const doWithSelection = (func, event, projectIDNeeded) => {
+    if (contentContainer.classList.contains('selection') && selection.length > 0) {
+        projectIDNeeded ? func(currentProjectID(), ...selection) : func(...selection);
+        toggleSelection();
+    } else {
+        projectIDNeeded ? func(currentProjectID(), event.target.closest('[data-id]').dataset.id) : func(event.target.closest('[data-id]').dataset.id);
+    }
+}
+
 body.addEventListener('click', (e) => {
     performAction('add-task', () => {
         dateInput.value = new Date().toISOString().split('T')[0] + 'T23:59';
     }, e)
     performAction('delete-forever', () => {
-        mainController.eraseTasks(currentProjectID(), e.target.closest('[data-id]').dataset.id);
+        doWithSelection(mainController.eraseTasks, e, true);
     }, e)
     performAction('delete', () => {
-        mainController.removeTasksFromProject(currentProjectID(), e.target.closest('[data-id]').dataset.id);
+        doWithSelection(mainController.removeTasksFromProject, e, true);
     }, e)
     performAction('check', () => {
-        mainController.checkTask(e.target.closest('[data-id]').dataset.id);
+        doWithSelection(mainController.checkTasks, e);
     }, e)
     performAction('edit-task', () => {
         mainController.toggleEditing(e.target);
     }, e)
     performAction('switch-project', () => {
         setTimeout(() => { mainController.switchProject(currentProjectID()) }, 1);
+        if (document.querySelector('[data-label="content-container"].selection')) toggleSelection();
+        selection = [];
     }, e)
     performAction('delete-project', () => {
         mainController.eraseProject(e.target.closest('[href]').hash.split('#')[1]);
     }, e)
+    performAction('select-tasks', () => {
+        toggleSelection();
+    }, e)
+    performAction('move', () => {
+    }, e)
+    if (contentContainer.classList.contains('selection')) {
+        performAction('select-task', () => {
+            e.target.closest('[data-id]').classList.toggle('selected');
+            e.target.closest('[data-id]').classList.contains('selected') ? selection.push(e.target.closest('[data-id]').dataset.id) : selection = selection.filter(ele => ele !== e.target.closest('[data-id]').dataset.id);
+        }, e)
+    }
 })
 
 contentContainer.addEventListener('submit', (e) => {

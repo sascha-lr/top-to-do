@@ -37,6 +37,7 @@ const drawTasks = (tasks, isProjectActive) => {
         const task = taskArray[1];
 
         const taskContainer = document.createElement('form');
+        taskContainer.dataset.action = 'select-task';
         taskContainer.method = 'dialog';
         taskContainer.classList.add('task');
         taskContainer.dataset.id = task.id;

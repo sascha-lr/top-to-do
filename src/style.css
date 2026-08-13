@@ -345,10 +345,12 @@ legend {
     padding-bottom: 1.5rem;
 }
 
-.content-container>.active.populated.content>button[data-action="add-task"] {
+.content-container>.active.populated.content>.btn-container {
     position: absolute;
     bottom: 1.5rem;
     right: 1.5rem;
+    display: flex;
+    gap: 1rem;
 }
 
 .content-container .task {
@@ -413,10 +415,6 @@ legend {
     appearance: auto;
 }
 
-.hidden-icons {
-    display: none;
-}
-
 .checked {
     text-decoration: line-through;
 }
@@ -459,4 +457,27 @@ button[data-action="display-projects"] {
 .btn[data-action="edit-task"].editing .checkmark,
 .btn[data-action="edit-task"] .pencil {
     display: flex;
+}
+
+.content-container.selection .btn[data-action="add-task"],
+.content-container.selection .task[data-id] .btn,
+.content-container.selection .task[data-id] input[type="checkbox"],
+.content-container>.populated.content>.btn-container>.btn[data-action="delete-forever"],
+.content-container>.populated.content>.btn-container>.btn[data-action="delete"],
+.content-container>.populated.content>.btn-container>.btn[data-action="move"] {
+    display: none;
+}
+
+.content-container.selection>.populated.content>.btn-container>.btn[data-action="delete-forever"],
+.content-container.selection>.populated.content>.btn-container>.btn[data-action="delete"],
+.content-container.selection>.populated.content>.btn-container>.btn[data-action="move"] {
+    display: flex;
+}
+
+.task[data-id].selected {
+    border: solid 2px var(--primary);
+}
+
+.content-container.selection>.populated.content>.btn-container>.btn[data-action="delete"].hidden {
+    display: none;
 }

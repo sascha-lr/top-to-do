@@ -61,18 +61,20 @@ const moveTasksFromProject = (projectID1, projectID2, ...taskIDs) => {
     addTasksToProject(projectID2, ...taskIDs);
 }
 
-const checkTask = (id) => {
-    taskController.checkTask(id);
-    const task = taskController.getTask(id);
-    const projects = projectController.getProjects();
-    projects.forEach((project) => {
-        const map = projectController.getProjectTasks(project.id);
-        if (projectController.getProjectTask(project.id, id)) {
-            map.set(task.id, task);
-            projectController.setProjectTasks(project.id, map);
-        }
-    });
-    screenController.checkTask(id);
+const checkTasks = (...ids) => {
+    for (let id of ids) {
+        taskController.checkTask(id);
+        const task = taskController.getTask(id);
+        const projects = projectController.getProjects();
+        projects.forEach((project) => {
+            const map = projectController.getProjectTasks(project.id);
+            if (projectController.getProjectTask(project.id, id)) {
+                map.set(task.id, task);
+                projectController.setProjectTasks(project.id, map);
+            }
+        });
+        screenController.checkTask(id);
+    }
 }
 
 const editTask = (taskID, taskName, taskDesc, taskDueDate, taskPriority) => {
@@ -114,4 +116,4 @@ const firstLoad = (() => {
     renderProjects(projectController.getProjects());
 })();
 
-export { makeTask, editTask, toggleEditing, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTask, changeProjectName, eraseProject, switchProject };
+export { makeTask, editTask, toggleEditing, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTasks, changeProjectName, eraseProject, switchProject };
