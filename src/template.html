@@ -102,6 +102,11 @@
             </form>
         </dialog>
 
+        <dialog id="project-move-dialog" class="project-move-dialog" closedby="any">
+            <div class="project-container">
+            </div>
+        </dialog>
+
         <div class="content-container" data-label="content-container">
             <div class="active empty content" data-label="empty-content">
                 <h1>Welcome to <span class="foreground primary">Taskify!</span></h1>
@@ -128,7 +133,8 @@
                 <div class="task-container" data-label="task-container">
                 </div>
                 <div class="btn-container">
-                    <button class="btn" data-action="move">
+                    <button class="btn" type="button" data-action="move" command="show-modal"
+                        commandfor="project-move-dialog">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#e3e3e3">
                             <path

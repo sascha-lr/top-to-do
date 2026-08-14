@@ -2,6 +2,7 @@ const allTasksContainer = document.querySelector('[data-label="task-container"]'
 const emptyContent = document.querySelector('[data-label="empty-content"]');
 const populatedContent = document.querySelector('[data-label="populated-content"]');
 const projectSelectionContainer = document.querySelector('#project-selection-dialog>.project-container');
+const projectMoveContainer = document.querySelector('#project-move-dialog>.project-container');
 
 const createButton = (className, action, ...svgPaths) => {
     const btn = document.createElement('button');
@@ -137,15 +138,21 @@ const drawProjects = (projects) => {
         link.href = `#${project.id}`;
         link.innerText = project.name;
         link.className = 'small btn option';
+
+        const clonedNode = link.cloneNode(true);
+        clonedNode.dataset.action = 'move-to-project';
+
         link.dataset.action = 'switch-project';
         link.appendChild(deleteBtn);
 
         projectSelectionContainer.appendChild(link);
+        projectMoveContainer.appendChild(clonedNode);
     });
 }
 
 const wipeProjectScreen = () => {
     projectSelectionContainer.textContent = '';
+    projectMoveContainer.textContent = '';
 }
 
 const updateProjectScreen = (projects) => {

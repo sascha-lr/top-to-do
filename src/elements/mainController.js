@@ -7,7 +7,7 @@ const renderTasks = (projectID) => {
     screenController.updateTaskScreen(tasks, projectController.getProject(projectID));
 }
 
-const renderProjects = (projects) => {
+const renderProjects = (projects = projectController.getProjects()) => {
     screenController.updateProjectScreen(projects);
 }
 
@@ -57,7 +57,7 @@ const removeTasksFromProject = (projectID, ...taskIDs) => {
 }
 
 const moveTasksFromProject = (projectID1, projectID2, ...taskIDs) => {
-    removeTasksFromProject(projectID1, ...taskIDs);
+    if (localStorage[projectID1]) removeTasksFromProject(projectID1, ...taskIDs);
     addTasksToProject(projectID2, ...taskIDs);
 }
 
@@ -116,4 +116,4 @@ const firstLoad = (() => {
     renderProjects(projectController.getProjects());
 })();
 
-export { makeTask, editTask, toggleEditing, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTasks, changeProjectName, eraseProject, switchProject };
+export { makeTask, editTask, toggleEditing, makeProject, eraseTasks, addTasksToProject, removeTasksFromProject, moveTasksFromProject, checkTasks, changeProjectName, eraseProject, switchProject, renderProjects };

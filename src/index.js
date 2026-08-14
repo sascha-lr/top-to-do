@@ -7,6 +7,8 @@ const dateInput = document.querySelector('#task-creation-dialog input[type="date
 const taskCreationForm = document.querySelector('#task-creation-dialog form');
 const projectCreationForm = document.querySelector('#project-creation-dialog form');
 const selectionButton = document.querySelector('.btn[data-action="select-tasks"]');
+const projectSelectionDialog = document.querySelector('#project-selection-dialog');
+const projectMoveDialog = document.querySelector('#project-move-dialog');
 
 const currentProjectID = () => {
     return window.location.hash.split('#')[1];
@@ -41,6 +43,14 @@ const doWithSelection = (func, event, projectIDNeeded) => {
     }
 }
 
+const switchProject = () => {
+    setTimeout(() => { mainController.switchProject(currentProjectID()) }, 1);
+    if (document.querySelector('[data-label="content-container"].selection')) toggleSelection();
+    selection = [];
+    projectSelectionDialog.close();
+    projectMoveDialog.close();
+}
+
 body.addEventListener('click', (e) => {
     performAction('add-task', () => {
         dateInput.value = new Date().toISOString().split('T')[0] + 'T23:59';
@@ -58,9 +68,7 @@ body.addEventListener('click', (e) => {
         mainController.toggleEditing(e.target);
     }, e)
     performAction('switch-project', () => {
-        setTimeout(() => { mainController.switchProject(currentProjectID()) }, 1);
-        if (document.querySelector('[data-label="content-container"].selection')) toggleSelection();
-        selection = [];
+        switchProject();
     }, e)
     performAction('delete-project', () => {
         mainController.eraseProject(e.target.closest('[href]').hash.split('#')[1]);
@@ -69,6 +77,13 @@ body.addEventListener('click', (e) => {
         toggleSelection();
     }, e)
     performAction('move', () => {
+        mainController.renderProjects();
+    }, e)
+    performAction('move-to-project', () => {
+        if (contentContainer.classList.contains('selection') && selection.length > 0) {
+            mainController.moveTasksFromProject(currentProjectID(), e.target.closest('[href]').hash.split('#')[1], ...selection);
+            switchProject();
+        }
     }, e)
     if (contentContainer.classList.contains('selection')) {
         performAction('select-task', () => {
