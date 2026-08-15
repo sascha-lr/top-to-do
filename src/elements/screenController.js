@@ -4,9 +4,14 @@ const populatedContent = document.querySelector('[data-label="populated-content"
 const projectSelectionContainer = document.querySelector('#project-selection-dialog>.project-container');
 const projectMoveContainer = document.querySelector('#project-move-dialog>.project-container');
 
-if (localStorage['all-tasks'] && emptyContent.classList.contains('active') && !populatedContent.classList.contains('active')) {
-    emptyContent.classList.remove('active');
-    populatedContent.classList.add('active');
+const checkIfTasks = () => {
+    if (localStorage['all-tasks'] === '[]' && !window.location.hash) {
+        emptyContent.classList.add('active');
+        populatedContent.classList.remove('active');
+    } else {
+        emptyContent.classList.remove('active');
+        populatedContent.classList.add('active');
+    }
 }
 
 const createButton = (className, action, ...svgPaths) => {
@@ -33,6 +38,8 @@ const createButton = (className, action, ...svgPaths) => {
 }
 
 const drawTasks = (tasks, isProjectActive) => {
+
+    checkIfTasks();
 
     for (let taskArray of tasks) {
         const task = taskArray[1];
@@ -101,6 +108,7 @@ const wipeScreen = () => {
 const updateTaskScreen = (tasks, isProjectActive) => {
     wipeScreen();
     drawTasks(tasks, isProjectActive);
+    checkIfTasks();
 }
 
 const checkTask = (id) => {
