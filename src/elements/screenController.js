@@ -4,6 +4,11 @@ const populatedContent = document.querySelector('[data-label="populated-content"
 const projectSelectionContainer = document.querySelector('#project-selection-dialog>.project-container');
 const projectMoveContainer = document.querySelector('#project-move-dialog>.project-container');
 
+if (localStorage['all-tasks'] && emptyContent.classList.contains('active') && !populatedContent.classList.contains('active')) {
+    emptyContent.classList.remove('active');
+    populatedContent.classList.add('active');
+}
+
 const createButton = (className, action, ...svgPaths) => {
     const btn = document.createElement('button');
     btn.className = className;
@@ -28,11 +33,6 @@ const createButton = (className, action, ...svgPaths) => {
 }
 
 const drawTasks = (tasks, isProjectActive) => {
-
-    if (tasks.size > 0 && emptyContent.classList.contains('active') && !populatedContent.classList.contains('active')) {
-        emptyContent.classList.remove('active');
-        populatedContent.classList.add('active');
-    }
 
     for (let taskArray of tasks) {
         const task = taskArray[1];
@@ -100,7 +100,7 @@ const wipeScreen = () => {
 
 const updateTaskScreen = (tasks, isProjectActive) => {
     wipeScreen();
-    drawTasks(tasks, isProjectActive); //Not a real update
+    drawTasks(tasks, isProjectActive);
 }
 
 const checkTask = (id) => {
@@ -131,22 +131,22 @@ const changeProjectName = (projectName) => {
 const drawProjects = (projects) => {
 
     projects.forEach(project => {
-        const link = document.createElement('a');
+        const projectSwitchLink = document.createElement('a');
         const deleteBtn = createButton('small btn', 'delete', 'M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z');
         deleteBtn.dataset.action = 'delete-project';
 
-        link.href = `#${project.id}`;
-        link.innerText = project.name;
-        link.className = 'small btn option';
+        projectSwitchLink.href = `#${project.id}`;
+        projectSwitchLink.innerText = project.name;
+        projectSwitchLink.className = 'small btn option';
 
-        const clonedNode = link.cloneNode(true);
-        clonedNode.dataset.action = 'move-to-project';
+        const taskMoveLink = projectSwitchLink.cloneNode(true);
+        taskMoveLink.dataset.action = 'move-to-project';
 
-        link.dataset.action = 'switch-project';
-        link.appendChild(deleteBtn);
+        projectSwitchLink.dataset.action = 'switch-project';
+        projectSwitchLink.appendChild(deleteBtn);
 
-        projectSelectionContainer.appendChild(link);
-        projectMoveContainer.appendChild(clonedNode);
+        projectSelectionContainer.appendChild(projectSwitchLink);
+        projectMoveContainer.appendChild(taskMoveLink);
     });
 }
 

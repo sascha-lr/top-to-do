@@ -113,7 +113,7 @@
                 <h2>It seems you do not have any tasks stored currently. Do you wanna <span
                         class="foreground primary">add a
                         new task?</span></h2>
-                <button class="btn" data-action="add-task" type="button" command="show-modal"
+                <button class="btn" data-action="open-add-task-dialog" type="button" command="show-modal"
                     commandfor="task-creation-dialog">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="#e3e3e3">
@@ -133,7 +133,7 @@
                 <div class="task-container" data-label="task-container">
                 </div>
                 <div class="btn-container">
-                    <button class="btn" type="button" data-action="move" command="show-modal"
+                    <button class="btn" type="button" data-action="open-move-dialog" command="show-modal"
                         commandfor="project-move-dialog">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#e3e3e3">
@@ -156,7 +156,8 @@
                         </svg>
                     </button>
                     <button class="btn" data-action="select-tasks">Select Tasks</button>
-                    <button class="btn" data-action="add-task" command="show-modal" commandfor="task-creation-dialog">
+                    <button class="btn" data-action="open-add-task-dialog" command="show-modal"
+                        commandfor="task-creation-dialog">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#e3e3e3">
                             <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />

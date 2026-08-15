@@ -18,77 +18,95 @@ const performAction = (action, func, event) => {
     if (event.target.closest(`[data-action="${action}"]`)) func();
 }
 
-let selection = [];
+const selectionController = (() => {
 
-const toggleSelection = () => {
-    for (let taskID of selection) {
-        if (document.querySelector(`.task[data-id="${taskID}"]`)) document.querySelector(`.task[data-id="${taskID}"]`).classList.remove('selected');
-    }
-    selection = [];
-    contentContainer.classList.toggle('selection');
-    contentContainer.classList.contains('selection') ? selectionButton.textContent = 'Stop Selecting' : selectionButton.textContent = 'Select Tasks';
-    if (localStorage[currentProjectID()] && contentContainer.classList.contains('selection')) {
-        document.querySelector('.content-container.selection>.populated.content>.btn-container>.btn[data-action="delete"]').classList.remove('hidden');
-    } else {
-        document.querySelector('.content-container>.populated.content>.btn-container>.btn[data-action="delete"]').classList.add('hidden');
-    }
-}
+    let selection = [];
 
-const doWithSelection = (func, event, projectIDNeeded) => {
-    if (contentContainer.classList.contains('selection') && selection.length > 0) {
-        projectIDNeeded ? func(currentProjectID(), ...selection) : func(...selection);
-        toggleSelection();
-    } else {
-        projectIDNeeded ? func(currentProjectID(), event.target.closest('[data-id]').dataset.id) : func(event.target.closest('[data-id]').dataset.id);
+    const toggleSelection = () => {
+        for (let taskID of selection) {
+            if (document.querySelector(`.task[data-id="${taskID}"]`)) document.querySelector(`.task[data-id="${taskID}"]`).classList.remove('selected');
+        }
+        selection = [];
+        contentContainer.classList.toggle('selection');
+        contentContainer.classList.contains('selection') ? selectionButton.textContent = 'Stop Selecting' : selectionButton.textContent = 'Select Tasks';
+        if (localStorage[currentProjectID()] && contentContainer.classList.contains('selection')) {
+            document.querySelector('.content-container.selection>.populated.content>.btn-container>.btn[data-action="delete"]').classList.remove('hidden');
+        } else {
+            document.querySelector('.content-container>.populated.content>.btn-container>.btn[data-action="delete"]').classList.add('hidden');
+        }
     }
-}
+
+    const execute = (func, event, projectIDNeeded) => {
+        if (contentContainer.classList.contains('selection') && selection.length > 0) {
+            projectIDNeeded ? func(currentProjectID(), ...selection) : func(...selection);
+            toggleSelection();
+        } else if (event.target.closest('[data-id]')) {
+            projectIDNeeded ? func(currentProjectID(), event.target.closest('[data-id]').dataset.id) : func(event.target.closest('[data-id]').dataset.id);
+        }
+    }
+
+    const selectTask = (event) => {
+        event.target.closest('[data-id]').classList.toggle('selected');
+        event.target.closest('[data-id]').classList.contains('selected') ? selection.push(event.target.closest('[data-id]').dataset.id) : selection = selection.filter(ele => ele !== event.target.closest('[data-id]').dataset.id);
+    }
+
+    const clearSelection = () => {
+        selection = [];
+    }
+
+    const moveProjects = (event) => {
+        if (contentContainer.classList.contains('selection') && selection.length > 0) {
+            mainController.moveTasksFromProject(currentProjectID(), event.target.closest('[href]').hash.split('#')[1], ...selection);
+            setTimeout(() => switchProject(), 1);
+        }
+    }
+
+    return { toggleSelection, execute, selectTask, clearSelection, moveProjects }
+})();
+
 
 const switchProject = () => {
-    setTimeout(() => { mainController.switchProject(currentProjectID()) }, 1);
-    if (document.querySelector('[data-label="content-container"].selection')) toggleSelection();
-    selection = [];
+    mainController.switchProject(currentProjectID());
+    if (document.querySelector('[data-label="content-container"].selection')) selectionController.toggleSelection();
+    selectionController.clearSelection();
     projectSelectionDialog.close();
     projectMoveDialog.close();
 }
 
 body.addEventListener('click', (e) => {
-    performAction('add-task', () => {
+    performAction('open-add-task-dialog', () => {
         dateInput.value = new Date().toISOString().split('T')[0] + 'T23:59';
     }, e)
     performAction('delete-forever', () => {
-        doWithSelection(mainController.eraseTasks, e, true);
+        selectionController.execute(mainController.eraseTasks, e, true);
     }, e)
     performAction('delete', () => {
-        doWithSelection(mainController.removeTasksFromProject, e, true);
+        selectionController.execute(mainController.removeTasksFromProject, e, true);
     }, e)
     performAction('check', () => {
-        doWithSelection(mainController.checkTasks, e);
+        selectionController.execute(mainController.checkTasks, e);
     }, e)
     performAction('edit-task', () => {
         mainController.toggleEditing(e.target);
     }, e)
     performAction('switch-project', () => {
-        switchProject();
+        setTimeout(() => switchProject(), 1);
     }, e)
     performAction('delete-project', () => {
         mainController.eraseProject(e.target.closest('[href]').hash.split('#')[1]);
     }, e)
     performAction('select-tasks', () => {
-        toggleSelection();
+        selectionController.toggleSelection();
     }, e)
-    performAction('move', () => {
-        mainController.renderProjects();
+    performAction('open-move-dialog', () => {
+        mainController.renderProjects(currentProjectID());
     }, e)
     performAction('move-to-project', () => {
-        if (contentContainer.classList.contains('selection') && selection.length > 0) {
-            mainController.moveTasksFromProject(currentProjectID(), e.target.closest('[href]').hash.split('#')[1], ...selection);
-            switchProject();
-        }
+        selectionController.moveProjects(e);
     }, e)
     if (contentContainer.classList.contains('selection')) {
         performAction('select-task', () => {
-            e.target.closest('[data-id]').classList.toggle('selected');
-            e.target.closest('[data-id]').classList.contains('selected') ? selection.push(e.target.closest('[data-id]').dataset.id) : selection = selection.filter(ele => ele !== e.target.closest('[data-id]').dataset.id);
+            selectionController.selectTask(e);
         }, e)
     }
 })

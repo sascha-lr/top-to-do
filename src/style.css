@@ -459,18 +459,18 @@ button[data-action="display-projects"] {
     display: flex;
 }
 
-.content-container.selection .btn[data-action="add-task"],
+.content-container.selection .btn[data-action="open-add-task-dialog"],
 .content-container.selection .task[data-id] .btn,
 .content-container.selection .task[data-id] input[type="checkbox"],
 .content-container>.populated.content>.btn-container>.btn[data-action="delete-forever"],
 .content-container>.populated.content>.btn-container>.btn[data-action="delete"],
-.content-container>.populated.content>.btn-container>.btn[data-action="move"] {
+.content-container>.populated.content>.btn-container>.btn[data-action="open-move-dialog"] {
     display: none;
 }
 
 .content-container.selection>.populated.content>.btn-container>.btn[data-action="delete-forever"],
 .content-container.selection>.populated.content>.btn-container>.btn[data-action="delete"],
-.content-container.selection>.populated.content>.btn-container>.btn[data-action="move"] {
+.content-container.selection>.populated.content>.btn-container>.btn[data-action="open-move-dialog"] {
     display: flex;
 }
 
