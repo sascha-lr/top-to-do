@@ -72,7 +72,6 @@ const drawTasks = (tasks, isProjectActive) => {
         const select = document.createElement('select');
         select.className = 'small btn dropdown hidden';
         select.name = 'task-priority';
-        select.id = 'task-priority';
 
         const opts = [
             {
