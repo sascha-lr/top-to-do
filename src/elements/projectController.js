@@ -35,9 +35,9 @@ const setProjectTasks = (projectID, input) => localStorage[projectID] = JSON.str
 const changeProject = (id, name, desc) => {
     const map = getProjects();
     const project = map.get(id);
-    new Project(name, desc);
-    project.name = name;
-    project.desc = desc;
+    const newProject = new Project(name, desc);
+    project.name = newProject.name;
+    project.desc = newProject.desc;
     setProjects(map);
 }
 
