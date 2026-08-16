@@ -84,7 +84,7 @@ const checkTasks = (...taskIDs) => {
     }
 }
 
-const editTask = (taskID, taskName, taskDesc, taskDueDate, taskPriority) => {
+const editTask = (taskID, taskName, taskDesc, taskDueDate, taskPriority, projectID) => {
     taskController.changeTask(taskID, taskName, taskDesc, taskDueDate, taskPriority);
 
     const task = taskController.getTask(taskID);
@@ -96,6 +96,7 @@ const editTask = (taskID, taskName, taskDesc, taskDueDate, taskPriority) => {
             projectController.setProjectTasks(project.id, map);
         }
     })
+    renderTasks(projectID);
 }
 
 const toggleEditing = (target) => {

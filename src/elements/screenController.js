@@ -69,6 +69,34 @@ const drawTasks = (tasks, isProjectActive) => {
         taskDueDate.readOnly = true;
         taskDueDate.name = 'task-due-date';
 
+        const select = document.createElement('select');
+        select.className = 'small btn dropdown hidden';
+        select.name = 'task-priority';
+        select.id = 'task-priority';
+
+        const opts = [
+            {
+                text: 'High',
+                value: 'high',
+            },
+            {
+                text: 'Medium',
+                value: 'medium',
+            },
+            {
+                text: 'Low',
+                value: 'low',
+            }
+        ]
+
+        for (let opt of opts) {
+            const option = document.createElement('option');
+            option.textContent = opt.text;
+            option.value = opt.value;
+            if (option.value === task.priority) option.selected = true;
+            select.appendChild(option);
+        }
+
         const btnContainer = document.createElement('div');
         btnContainer.classList.add('btn-container');
 
@@ -78,10 +106,11 @@ const drawTasks = (tasks, isProjectActive) => {
         checkBox.checked = task.isDone;
 
         const deleteForeverBtn = createButton('small btn', 'delete-forever', 'm376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z');
-        const taskEditBtn = createButton('small btn', 'edit-task', 'M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z', 'M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z');
+        const taskEditBtn = createButton('small btn', 'toggle-editing', 'M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z', 'M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z');
         taskEditBtn.querySelector('svg:nth-child(1)').classList.add('pencil');
         taskEditBtn.querySelector('svg:nth-child(2)').classList.add('checkmark');
 
+        btnContainer.appendChild(select);
         btnContainer.appendChild(checkBox);
         btnContainer.appendChild(taskEditBtn);
 
@@ -117,18 +146,20 @@ const checkTask = (id) => {
 
 const toggleEditing = (target) => {
     const task = target.closest('[data-id]');
-    const button = target.closest('[data-action="edit-task"]');
+    const button = target.closest('[data-action="toggle-editing"]');
     button.classList.toggle('editing');
     if (button.classList.contains('editing')) {
-        setTimeout(() => { button.type = 'submit' }, 0);
+        setTimeout(() => button.type = 'submit', 0);
         task.querySelectorAll('input:not([type="checkbox"])').forEach((input) => {
             input.readOnly = false;
+            task.querySelector('select').classList.remove('hidden');
         })
     } else {
-        setTimeout(() => { button.type = 'button' }, 0);
+        setTimeout(() => button.type = 'button', 0);
         task.querySelectorAll('input:not([type="checkbox"])').forEach((input) => {
             input.readOnly = true;
         })
+        task.querySelector('select').classList.add('hidden');
     }
 }
 

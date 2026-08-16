@@ -86,7 +86,7 @@ body.addEventListener('click', (e) => {
     performAction('check', () => {
         selectionController.execute(mainController.checkTasks, e);
     }, e)
-    performAction('edit-task', () => {
+    performAction('toggle-editing', () => {
         mainController.toggleEditing(e.target);
     }, e)
     performAction('switch-project', () => {
@@ -118,7 +118,7 @@ contentContainer.addEventListener('submit', (e) => {
     const taskDesc = formData.get('task-desc');
     const taskDueDate = formData.get('task-due-date');
     const taskPriority = formData.get('task-priority');
-    mainController.editTask(taskID, taskName, taskDesc, taskDueDate, taskPriority);
+    mainController.editTask(taskID, taskName, taskDesc, taskDueDate, taskPriority, currentProjectID());
 })
 
 taskCreationForm.addEventListener('submit', () => {

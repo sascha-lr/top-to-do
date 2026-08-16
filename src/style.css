@@ -449,13 +449,13 @@ button[data-action="display-projects"] {
     max-width: max-content;
 }
 
-.btn[data-action="edit-task"] .checkmark,
-.btn[data-action="edit-task"].editing .pencil {
+.btn[data-action="toggle-editing"] .checkmark,
+.btn[data-action="toggle-editing"].editing .pencil {
     display: none;
 }
 
-.btn[data-action="edit-task"].editing .checkmark,
-.btn[data-action="edit-task"] .pencil {
+.btn[data-action="toggle-editing"].editing .checkmark,
+.btn[data-action="toggle-editing"] .pencil {
     display: flex;
 }
 
@@ -480,4 +480,8 @@ button[data-action="display-projects"] {
 
 .content-container.selection>.populated.content>.btn-container>.btn[data-action="delete"].hidden {
     display: none;
+}
+
+.hidden {
+    pointer-events: none;
 }
