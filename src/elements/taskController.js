@@ -33,11 +33,11 @@ const setTasks = (input) => localStorage['all-tasks'] = JSON.stringify(Array.fro
 const changeTask = (id, name, desc, dueDate, priority) => {
     const map = getTasks();
     const task = map.get(id);
-    new Task(name, desc, dueDate, priority);
-    task.name = name;
-    task.desc = desc;
-    task.dueDate = dueDate;
-    task.priority = priority;
+    const newTask = new Task(name, desc, dueDate, priority);
+    task.name = newTask.name;
+    task.desc = newTask.desc;
+    task.dueDate = newTask.dueDate;
+    task.priority = newTask.priority;
     setTasks(map);
 }
 
