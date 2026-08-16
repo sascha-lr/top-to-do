@@ -5,7 +5,7 @@ const projectSelectionContainer = document.querySelector('#project-selection-dia
 const projectMoveContainer = document.querySelector('#project-move-dialog>.project-container');
 
 const checkIfTasks = () => {
-    if (localStorage['all-tasks'] === '[]' && !window.location.hash) {
+    if (localStorage['all-tasks'] === '[]' && !localStorage[window.location.hash.split('#')[1]]) {
         emptyContent.classList.add('active');
         populatedContent.classList.remove('active');
     } else {
