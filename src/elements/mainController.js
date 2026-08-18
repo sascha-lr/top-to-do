@@ -87,9 +87,9 @@ const moveTasksFromProject = (projectID1, projectID2, ...taskIDs) => {
     toggleSelectionButton();
 }
 
-const checkTasks = (...taskIDs) => {
+const checkTasksHelper = (projectID, isDone, ...taskIDs) => {
     for (let id of taskIDs) {
-        taskController.checkTask(id);
+        taskController.checkTask(id, isDone);
         const task = taskController.getTask(id);
         const projects = projectController.getProjects();
         projects.forEach((project) => {
@@ -99,7 +99,17 @@ const checkTasks = (...taskIDs) => {
                 projectController.setProjectTasks(project.id, map);
             }
         });
-        screenController.checkTask(id);
+    }
+    renderTasks(projectID);
+}
+
+const checkTasks = (projectID, ...taskIDs) => {
+    if (taskIDs.length === 1) {
+        checkTasksHelper(projectID, undefined, ...taskIDs)
+    } else if (taskIDs.every((id) => taskController.getTask(id).isDone === true)) {
+        checkTasksHelper(projectID, false, ...taskIDs);
+    } else {
+        checkTasksHelper(projectID, true, ...taskIDs);
     }
 }
 

@@ -36,10 +36,10 @@ const selectionController = (() => {
         }
     }
 
-    const execute = (func, event, projectIDNeeded) => {
+    const execute = (func, event, projectIDNeeded, finisherFunc) => {
         if (contentContainer.classList.contains('selection') && selection.length > 0) {
             projectIDNeeded ? func(currentProjectID(), ...selection) : func(...selection);
-            toggleSelection();
+            if (finisherFunc) finisherFunc();
         } else if (event.target.closest('[data-id]')) {
             projectIDNeeded ? func(currentProjectID(), event.target.closest('[data-id]').dataset.id) : func(event.target.closest('[data-id]').dataset.id);
         }
@@ -78,13 +78,13 @@ body.addEventListener('click', (e) => {
         dateInput.value = new Date().toISOString().split('T')[0] + 'T23:59';
     }, e)
     performAction('delete-forever', () => {
-        selectionController.execute(mainController.eraseTasks, e, true);
+        selectionController.execute(mainController.eraseTasks, e, true, selectionController.toggleSelection);
     }, e)
     performAction('delete', () => {
-        selectionController.execute(mainController.removeTasksFromProject, e, true);
+        selectionController.execute(mainController.removeTasksFromProject, e, true, selectionController.toggleSelection);
     }, e)
     performAction('check', () => {
-        selectionController.execute(mainController.checkTasks, e);
+        selectionController.execute(mainController.checkTasks, e, true);
     }, e)
     performAction('toggle-editing', () => {
         mainController.toggleEditing(e.target);

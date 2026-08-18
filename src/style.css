@@ -415,8 +415,8 @@ legend {
     appearance: auto;
 }
 
-.checked {
-    text-decoration: line-through;
+.task:has(input[type="checkbox"]:checked) {
+    background-color: red;
 }
 
 .small.btn.option {
@@ -464,13 +464,15 @@ button[data-action="display-projects"] {
 .content-container.selection .task[data-id] input[type="checkbox"],
 .content-container>.populated.content>.btn-container>.btn[data-action="delete-forever"],
 .content-container>.populated.content>.btn-container>.btn[data-action="delete"],
-.content-container>.populated.content>.btn-container>.btn[data-action="open-move-dialog"] {
+.content-container>.populated.content>.btn-container>.btn[data-action="open-move-dialog"],
+.content-container>.populated.content>.btn-container>input[type="checkbox"] {
     display: none;
 }
 
 .content-container.selection>.populated.content>.btn-container>.btn[data-action="delete-forever"],
 .content-container.selection>.populated.content>.btn-container>.btn[data-action="delete"],
-.content-container.selection>.populated.content>.btn-container>.btn[data-action="open-move-dialog"] {
+.content-container.selection>.populated.content>.btn-container>.btn[data-action="open-move-dialog"],
+.content-container.selection>.populated.content>.btn-container>input[type="checkbox"] {
     display: flex;
 }
 

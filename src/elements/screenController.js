@@ -149,10 +149,6 @@ const updateTaskScreen = (tasks, isProjectActive) => {
     checkIfTasks();
 }
 
-const checkTask = (id) => {
-    document.querySelector(`[data-id="${id}"]`).classList.toggle('checked');
-}
-
 const toggleEditing = (target) => {
     const task = target.closest('[data-id]');
     const button = target.closest('[data-action="toggle-editing"]');
@@ -233,5 +229,5 @@ const updateTaskMoveScreen = (projects) => {
     drawTaskMoveProjects(drawProjectsHelper(projects));
 }
 
-export { updateTaskScreen, updateProjectScreen, updateTaskMoveScreen, checkTask, toggleEditing, changeProjectName };
+export { updateTaskScreen, updateProjectScreen, updateTaskMoveScreen, toggleEditing, changeProjectName };
 

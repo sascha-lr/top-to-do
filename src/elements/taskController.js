@@ -41,10 +41,10 @@ const changeTask = (id, name, desc, dueDate, priority) => {
     setTasks(map);
 }
 
-const checkTask = (id) => {
+const checkTask = (id, isDone) => {
     const map = getTasks();
     const task = map.get(id);
-    task.isDone = !task.isDone;
+    isDone === undefined ? task.isDone = !task.isDone : task.isDone = isDone;
     setTasks(map);
 }
 
