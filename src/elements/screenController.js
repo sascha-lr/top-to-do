@@ -70,6 +70,7 @@ const drawTasks = (tasks, isProjectActive) => {
         taskDesc.value = task.desc;
         taskDesc.readOnly = true;
         taskDesc.name = 'task-desc';
+        taskDesc.placeholder = 'This task has no description.';
 
         const taskDueDate = document.createElement('input');
         taskDueDate.classList.add('due-date');

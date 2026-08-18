@@ -1,7 +1,7 @@
 export class Task {
 
     #name;
-    #desc = 'This task has no description.';
+    #desc = '';
     #dueDate = new Date().toISOString().split('T')[0] + 'T23:59';
     #createdDate = new Date().toISOString().slice(0, -8);
     #priority = 'medium';
@@ -35,7 +35,7 @@ export class Task {
     }
 
     set desc(input) {
-        if (input) this.#desc = input;
+        this.#desc = input;
     }
 
     get dueDate() {
