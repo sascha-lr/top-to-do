@@ -119,8 +119,8 @@ const drawTasks = (tasks, isProjectActive) => {
         taskEditBtn.querySelector('svg:nth-child(1)').classList.add('pencil');
         taskEditBtn.querySelector('svg:nth-child(2)').classList.add('checkmark');
 
-        btnContainer.appendChild(select);
         btnContainer.appendChild(checkBox);
+        btnContainer.appendChild(select);
         btnContainer.appendChild(taskEditBtn);
 
         if (isProjectActive) {
