@@ -490,3 +490,7 @@ button[data-action="display-projects"] {
     display: flex;
     justify-content: space-between;
 }
+
+.hidden {
+    display: none;
+}
