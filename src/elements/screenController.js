@@ -14,12 +14,9 @@ const checkIfTasks = () => {
     }
 }
 
-const createButton = (className, action, ...svgPaths) => {
-    const btn = document.createElement('button');
+const createButtonHelper = (btn, className, action, ...svgPaths) => {
     btn.className = className;
     btn.dataset.action = action;
-    btn.type = 'button';
-
     for (let svgPath of svgPaths) {
         const svgNameSpace = 'http://www.w3.org/2000/svg';
 
@@ -35,6 +32,18 @@ const createButton = (className, action, ...svgPaths) => {
         btn.appendChild(svg);
     }
     return btn;
+}
+
+const createButton = (className, action, ...svgPaths) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    return createButtonHelper(btn, className, action, ...svgPaths);
+}
+
+const createLinkButton = (link, className, action, ...svgPaths) => {
+    const btn = document.createElement('a');
+    btn.href = link;
+    return createButtonHelper(btn, className, action, ...svgPaths);
 }
 
 const drawTasks = (tasks, isProjectActive) => {
@@ -170,8 +179,13 @@ const drawProjects = (projects) => {
 
     projects.forEach(project => {
         const projectSwitchLink = document.createElement('a');
-        const deleteBtn = createButton('small btn', 'delete', 'M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z');
+
+        const projectButtonContainer = document.createElement('div');
+        projectButtonContainer.className = 'project';
+
+        const deleteBtn = createLinkButton('#', 'small btn', 'delete', 'M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z');
         deleteBtn.dataset.action = 'delete-project';
+        deleteBtn.href = '#';
 
         projectSwitchLink.href = `#${project.id}`;
         projectSwitchLink.innerText = project.name;
@@ -181,9 +195,11 @@ const drawProjects = (projects) => {
         taskMoveLink.dataset.action = 'move-to-project';
 
         projectSwitchLink.dataset.action = 'switch-project';
-        projectSwitchLink.appendChild(deleteBtn);
 
-        projectSelectionContainer.appendChild(projectSwitchLink);
+        projectButtonContainer.appendChild(projectSwitchLink);
+        projectButtonContainer.appendChild(deleteBtn);
+
+        projectSelectionContainer.appendChild(projectButtonContainer);
         projectMoveContainer.appendChild(taskMoveLink);
     });
 }

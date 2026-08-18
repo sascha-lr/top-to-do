@@ -485,3 +485,8 @@ button[data-action="display-projects"] {
 .hidden {
     pointer-events: none;
 }
+
+.project {
+    display: flex;
+    justify-content: space-between;
+}

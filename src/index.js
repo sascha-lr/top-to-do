@@ -93,7 +93,8 @@ body.addEventListener('click', (e) => {
         setTimeout(() => switchProject(), 1);
     }, e)
     performAction('delete-project', () => {
-        mainController.eraseProject(e.target.closest('[href]').hash.split('#')[1]);
+        mainController.eraseProject(e.target.closest('[data-action]').previousElementSibling.hash.split('#')[1]);
+        switchProject();
     }, e)
     performAction('select-tasks', () => {
         selectionController.toggleSelection();
