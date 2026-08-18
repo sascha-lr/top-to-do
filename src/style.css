@@ -482,7 +482,7 @@ button[data-action="display-projects"] {
     display: none;
 }
 
-.hidden {
+.no-interact {
     pointer-events: none;
 }
 

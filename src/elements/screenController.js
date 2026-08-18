@@ -79,7 +79,7 @@ const drawTasks = (tasks, isProjectActive) => {
         taskDueDate.name = 'task-due-date';
 
         const select = document.createElement('select');
-        select.className = 'small btn dropdown hidden';
+        select.className = 'small btn dropdown no-interact';
         select.name = 'task-priority';
 
         const opts = [
@@ -160,14 +160,14 @@ const toggleEditing = (target) => {
         setTimeout(() => button.type = 'submit', 0);
         task.querySelectorAll('input:not([type="checkbox"])').forEach((input) => {
             input.readOnly = false;
-            task.querySelector('select').classList.remove('hidden');
+            task.querySelector('select').classList.remove('no-interact');
         })
     } else {
         setTimeout(() => button.type = 'button', 0);
         task.querySelectorAll('input:not([type="checkbox"])').forEach((input) => {
             input.readOnly = true;
         })
-        task.querySelector('select').classList.add('hidden');
+        task.querySelector('select').classList.add('no-interact');
     }
 }
 
