@@ -15,16 +15,20 @@ const toggleSelectionButton = () => {
     }
 }
 
-const renderProjects = (currentProjectID) => {
+const renderProjects = () => {
+    screenController.updateProjectScreen(projectController.getProjects());
+    toggleSelectionButton();
+}
+
+const renderTaskMoveScreen = (currentProjectID) => {
     if (currentProjectID) {
         const arr = Array.from(projectController.getProjects());
         const filterArr = arr.filter((ele) => ele[0] !== currentProjectID);
         const filterMap = new Map(filterArr);
-        screenController.updateProjectScreen(filterMap);
+        screenController.updateTaskMoveScreen(filterMap);
     } else {
-        screenController.updateProjectScreen(projectController.getProjects());
+        screenController.updateTaskMoveScreen(projectController.getProjects());
     }
-    toggleSelectionButton();
 }
 
 const makeTask = (projectID, taskName, taskDesc, taskDueDate, taskPriority, taskIsDone, taskID, taskCreatedDate) => {
@@ -142,4 +146,4 @@ const firstLoad = (() => {
     toggleSelectionButton();
 })();
 
-export { makeTask, makeProject, editTask, renderProjects, eraseTasks, eraseProject, moveTasksFromProject, switchProject, removeTasksFromProject, checkTasks, toggleEditing };
+export { makeTask, makeProject, editTask, renderProjects, renderTaskMoveScreen, eraseTasks, eraseProject, moveTasksFromProject, switchProject, removeTasksFromProject, checkTasks, toggleEditing };

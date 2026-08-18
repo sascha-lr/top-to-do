@@ -176,11 +176,21 @@ const changeProjectName = (projectName) => {
     document.querySelector('[data-label="project-name"]').innerText = projectName;
 }
 
-const drawProjects = (projects) => {
+const drawProjectsHelper = (projects) => {
+    let nodes = [];
+    projects.forEach((project) => {
+        const projectLink = document.createElement('a');
+        projectLink.href = `#${project.id}`;
+        projectLink.innerText = project.name;
+        projectLink.className = 'small btn option';
+        nodes.push(projectLink);
+    })
+    return nodes;
+}
 
-    projects.forEach(project => {
-        const projectSwitchLink = document.createElement('a');
+const drawProjects = (nodes) => {
 
+    for (let node of nodes) {
         const projectButtonContainer = document.createElement('div');
         projectButtonContainer.className = 'project';
 
@@ -188,32 +198,40 @@ const drawProjects = (projects) => {
         deleteBtn.dataset.action = 'delete-project';
         deleteBtn.href = '#';
 
-        projectSwitchLink.href = `#${project.id}`;
-        projectSwitchLink.innerText = project.name;
-        projectSwitchLink.className = 'small btn option';
+        node.dataset.action = 'switch-project';
 
-        const taskMoveLink = projectSwitchLink.cloneNode(true);
-        taskMoveLink.dataset.action = 'move-to-project';
-
-        projectSwitchLink.dataset.action = 'switch-project';
-
-        projectButtonContainer.appendChild(projectSwitchLink);
+        projectButtonContainer.appendChild(node);
         projectButtonContainer.appendChild(deleteBtn);
-
         projectSelectionContainer.appendChild(projectButtonContainer);
-        projectMoveContainer.appendChild(taskMoveLink);
-    });
+    }
+}
+
+const drawTaskMoveProjects = (nodes) => {
+
+    for (let node of nodes) {
+        node.dataset.action = 'move-to-project';
+
+        projectMoveContainer.appendChild(node);
+    }
 }
 
 const wipeProjectScreen = () => {
     projectSelectionContainer.textContent = '';
+}
+
+const wipeTaskMoveScreen = () => {
     projectMoveContainer.textContent = '';
 }
 
 const updateProjectScreen = (projects) => {
     wipeProjectScreen();
-    drawProjects(projects);
+    drawProjects(drawProjectsHelper(projects));
 }
 
-export { updateTaskScreen, updateProjectScreen, checkTask, toggleEditing, changeProjectName };
+const updateTaskMoveScreen = (projects) => {
+    wipeTaskMoveScreen();
+    drawTaskMoveProjects(drawProjectsHelper(projects));
+}
+
+export { updateTaskScreen, updateProjectScreen, updateTaskMoveScreen, checkTask, toggleEditing, changeProjectName };
 

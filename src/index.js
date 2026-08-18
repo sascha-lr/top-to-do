@@ -100,7 +100,7 @@ body.addEventListener('click', (e) => {
         selectionController.toggleSelection();
     }, e)
     performAction('open-move-dialog', () => {
-        mainController.renderProjects(currentProjectID());
+        mainController.renderTaskMoveScreen(currentProjectID());
     }, e)
     performAction('move-to-project', () => {
         selectionController.moveProjects(e);
