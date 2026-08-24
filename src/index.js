@@ -57,7 +57,6 @@ const selectionController = (() => {
     const moveProjects = (event) => {
         if (contentContainer.classList.contains('selection') && selection.length > 0) {
             mainController.moveTasksFromProject(currentProjectID(), event.target.closest('[href]').hash.split('#')[1], ...selection);
-            setTimeout(() => switchProject(), 1);
         }
     }
 
@@ -89,9 +88,6 @@ body.addEventListener('click', (e) => {
     performAction('toggle-editing', () => {
         mainController.toggleEditing(e.target);
     }, e)
-    performAction('switch-project', () => {
-        setTimeout(() => switchProject(), 1);
-    }, e)
     performAction('delete-project', () => {
         mainController.eraseProject(e.target.closest('[data-action]').previousElementSibling.hash.split('#')[1]);
         switchProject();
@@ -110,6 +106,10 @@ body.addEventListener('click', (e) => {
             selectionController.selectTask(e);
         }, e)
     }
+})
+
+window.addEventListener('hashchange', () => {
+    switchProject();
 })
 
 contentContainer.addEventListener('submit', (e) => {

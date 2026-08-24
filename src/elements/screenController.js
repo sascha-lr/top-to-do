@@ -210,8 +210,6 @@ const drawProjects = (nodes) => {
         deleteBtn.dataset.action = 'delete-project';
         deleteBtn.href = '#';
 
-        node.dataset.action = 'switch-project';
-
         projectButtonContainer.appendChild(node);
         projectButtonContainer.appendChild(deleteBtn);
         projectSelectionContainer.appendChild(projectButtonContainer);
