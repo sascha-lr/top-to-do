@@ -23,7 +23,7 @@ export class Task {
     }
 
     set name(input) {
-        if (input.length < 3 || input.length > 30) {
+        if (input.length < 3 || input.length > 20) {
             throw new Error(`The task's name \n[Task ID: ${this.id}, \nCreated: ${this.created}] \nneeds to be between 3 and 20 characters long.`);
         } else {
             this.#name = input;
