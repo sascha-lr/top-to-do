@@ -46,6 +46,14 @@ const createLinkButton = (link, className, action, ...svgPaths) => {
     return createButtonHelper(btn, className, action, ...svgPaths);
 }
 
+const toggleSelectionButton = () => {
+    if (document.querySelector('[data-id]')) {
+        document.querySelector('.btn[data-action="select-tasks"]').classList.remove('hidden');
+    } else {
+        document.querySelector('.btn[data-action="select-tasks"]').classList.add('hidden');
+    }
+}
+
 const drawTasks = (tasks, isProjectActive) => {
 
     checkIfTasks();
@@ -154,6 +162,7 @@ const updateTaskScreen = (tasks, isProjectActive) => {
         document.querySelector(`[data-id="${id}"]`).classList.add('selected');
     }
     checkIfTasks();
+    toggleSelectionButton();
 }
 
 const toggleEditing = (target) => {
@@ -229,11 +238,13 @@ const wipeTaskMoveScreen = () => {
 const updateProjectScreen = (projects) => {
     wipeProjectScreen();
     drawProjects(drawProjectsHelper(projects));
+    toggleSelectionButton();
 }
 
 const updateTaskMoveScreen = (projects) => {
     wipeTaskMoveScreen();
     drawTaskMoveProjects(drawProjectsHelper(projects));
+    toggleSelectionButton();
 }
 
 export { updateTaskScreen, updateProjectScreen, updateTaskMoveScreen, toggleEditing, changeProjectName };

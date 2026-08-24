@@ -7,17 +7,8 @@ const renderTasks = (projectID) => {
     screenController.updateTaskScreen(tasks, projectController.getProject(projectID));
 }
 
-const toggleSelectionButton = () => {
-    if (document.querySelector('[data-id]')) {
-        document.querySelector('.btn[data-action="select-tasks"]').classList.remove('hidden');
-    } else {
-        document.querySelector('.btn[data-action="select-tasks"]').classList.add('hidden');
-    }
-}
-
 const renderProjects = () => {
     screenController.updateProjectScreen(projectController.getProjects());
-    toggleSelectionButton();
 }
 
 const renderTaskMoveScreen = (currentProjectID) => {
@@ -35,14 +26,12 @@ const makeTask = (projectID, taskName, taskDesc, taskDueDate, taskPriority, task
     const task = taskController.addTask(taskName, taskDesc, taskDueDate, taskPriority, taskIsDone, taskID, taskCreatedDate);
     if (localStorage[projectID]) addTasksToProject(projectID, task.id);
     renderTasks(projectID);
-    toggleSelectionButton();
 }
 
 const makeProject = (projectName, projectDesc, projectID, ...taskIDs) => {
     const project = projectController.addProject(projectName, projectDesc, projectID);
     if (taskIDs.length > 0) addTasksToProject(project.id, ...taskIDs);
     screenController.updateProjectScreen(projectController.getProjects());
-    toggleSelectionButton();
 }
 
 const eraseTasks = (projectID, ...taskIDs) => {
@@ -58,7 +47,6 @@ const eraseTasks = (projectID, ...taskIDs) => {
         }
     })
     renderTasks(projectID);
-    toggleSelectionButton();
 }
 
 const addTasksToProject = (projectID, ...taskIDs) => {
@@ -68,7 +56,6 @@ const addTasksToProject = (projectID, ...taskIDs) => {
         map.set(task.id, task)
     }
     projectController.setProjectTasks(projectID, map);
-    toggleSelectionButton();
 }
 
 const removeTasksFromProject = (projectID, ...taskIDs) => {
@@ -78,13 +65,11 @@ const removeTasksFromProject = (projectID, ...taskIDs) => {
     }
     projectController.setProjectTasks(projectID, map)
     renderTasks(projectID);
-    toggleSelectionButton();
 }
 
 const moveTasksFromProject = (projectID1, projectID2, ...taskIDs) => {
     if (localStorage[projectID1]) removeTasksFromProject(projectID1, ...taskIDs);
     addTasksToProject(projectID2, ...taskIDs);
-    toggleSelectionButton();
 }
 
 const checkTasksHelper = (projectID, isDone, ...taskIDs) => {
@@ -140,20 +125,17 @@ const changeProjectName = (projectID) => {
 const switchProject = (projectID) => {
     renderTasks(projectID);
     changeProjectName(projectID);
-    toggleSelectionButton();
 }
 
 const eraseProject = (projectID) => {
     projectController.deleteProjects(projectID);
     screenController.updateProjectScreen(projectController.getProjects());
-    toggleSelectionButton();
 }
 
 const firstLoad = (() => {
     renderTasks(window.location.hash.split('#')[1]);
     changeProjectName(window.location.hash.split('#')[1]);
     renderProjects();
-    toggleSelectionButton();
 })();
 
 export { makeTask, makeProject, editTask, renderProjects, renderTaskMoveScreen, eraseTasks, eraseProject, moveTasksFromProject, switchProject, removeTasksFromProject, checkTasks, toggleEditing };
