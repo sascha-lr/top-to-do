@@ -54,13 +54,13 @@ const selectionController = (() => {
         selection = [];
     }
 
-    const moveProjects = (event) => {
+    const moveTasks = (event) => {
         if (contentContainer.classList.contains('selection') && selection.length > 0) {
             mainController.moveTasksFromProject(currentProjectID(), event.target.closest('[href]').hash.split('#')[1], ...selection);
         }
     }
 
-    return { toggleSelection, execute, selectTask, clearSelection, moveProjects }
+    return { toggleSelection, execute, selectTask, clearSelection, moveTasks }
 })();
 
 
@@ -71,6 +71,10 @@ const switchProject = () => {
     projectSelectionDialog.close();
     projectMoveDialog.close();
 }
+
+window.addEventListener('hashchange', () => {
+    switchProject();
+})
 
 body.addEventListener('click', (e) => {
     performAction('open-add-task-dialog', () => {
@@ -99,17 +103,13 @@ body.addEventListener('click', (e) => {
         mainController.renderTaskMoveScreen(currentProjectID());
     }, e)
     performAction('move-to-project', () => {
-        selectionController.moveProjects(e);
+        selectionController.moveTasks(e);
     }, e)
     if (contentContainer.classList.contains('selection')) {
         performAction('select-task', () => {
             selectionController.selectTask(e);
         }, e)
     }
-})
-
-window.addEventListener('hashchange', () => {
-    switchProject();
 })
 
 contentContainer.addEventListener('submit', (e) => {
