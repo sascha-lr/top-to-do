@@ -144,8 +144,15 @@ const wipeScreen = () => {
 }
 
 const updateTaskScreen = (tasks, isProjectActive) => {
+    let selected = [];
+    for (let task of tasks) {
+        if (document.querySelector(`[data-id="${task[0]}"].selected`)) selected.push(task[0]);
+    }
     wipeScreen();
     drawTasks(tasks, isProjectActive);
+    for (let id of selected) {
+        document.querySelector(`[data-id="${id}"]`).classList.add('selected');
+    }
     checkIfTasks();
 }
 
