@@ -50,8 +50,12 @@ const selectionController = (() => {
         event.target.closest('[data-id]').classList.contains('selected') ? selection.push(event.target.closest('[data-id]').dataset.id) : selection = selection.filter(ele => ele !== event.target.closest('[data-id]').dataset.id);
     }
 
-    const clearSelection = () => {
-        selection = [];
+    const clearSelection = () => selection = [];
+
+    const openTaskMoveModal = () => {
+        if (localStorage['all-projects'] === '[]' || selection.length === 0) return;
+        projectMoveDialog.showModal();
+        mainController.renderTaskMoveScreen(currentProjectID());
     }
 
     const moveTasks = (event) => {
@@ -60,7 +64,7 @@ const selectionController = (() => {
         }
     }
 
-    return { toggleSelection, execute, selectTask, clearSelection, moveTasks }
+    return { toggleSelection, execute, selectTask, clearSelection, moveTasks, openTaskMoveModal }
 })();
 
 
@@ -100,7 +104,7 @@ body.addEventListener('click', (e) => {
         selectionController.toggleSelection();
     }, e)
     performAction('open-move-dialog', () => {
-        mainController.renderTaskMoveScreen(currentProjectID());
+        selectionController.openTaskMoveModal(currentProjectID());
     }, e)
     performAction('move-to-project', () => {
         selectionController.moveTasks(e);
