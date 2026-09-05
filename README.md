@@ -12,4 +12,6 @@ design.
 I could also have spent hours refactoring the non-optimal parts of the finished
 app. To be honest, I was already tired of the project: it had exceeded the
 course requirements by a pretty large margin, and further refactoring would
-have been exhausting with diminishing returns.
+have been exhausting with diminishing returns. I knew the code had imperfections,
+but I chose to finish rather than polish endlessly. If I had to productionize it,
+I would refactor the state handling first and foremost.
