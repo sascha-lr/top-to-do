@@ -33,7 +33,7 @@ export class Project {
 
     set id(input) {
         if (!input) return;
-        const regex = /^[a-z,0-9,-]{36,36}$/;
+        const regex = /^[a-z0-9-]{36}$/;
         if (regex.test(input)) {
             this.#id = input;
         } else {

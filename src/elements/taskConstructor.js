@@ -24,7 +24,7 @@ export class Task {
 
     set name(input) {
         if (input.length < 3 || input.length > 20) {
-            throw new Error(`The task's name \n[Task ID: ${this.id}, \nCreated: ${this.created}] \nneeds to be between 3 and 20 characters long.`);
+            throw new Error(`The task's name \n[Task ID: ${this.id}, \nCreated: ${this.createdDate}] \nneeds to be between 3 and 20 characters long.`);
         } else {
             this.#name = input;
         }
@@ -47,7 +47,7 @@ export class Task {
         if (regex.test(input)) {
             this.#dueDate = input;
         } else {
-            console.warn(`The due date of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.created}] \nhas been provided in the wrong format or not at all. Therefore today's date at 23:59 will be set as the due date.`);
+            console.warn(`The due date of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.createdDate}] \nhas been provided in the wrong format or not at all. Therefore today's date at 23:59 will be set as the due date.`);
         }
     }
 
@@ -61,7 +61,7 @@ export class Task {
         if (validInputs.includes(input)) {
             this.#priority = input;
         } else {
-            console.warn(`The priority of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.created}] \nhas been provided in the wrong format or not at all. Therefore it is set to 'Medium'.`);
+            console.warn(`The priority of \n[Task Name: ${this.name}, \nTask ID: ${this.id}, \nCreated: ${this.createdDate}] \nhas been provided in the wrong format or not at all. Therefore it is set to 'Medium'.`);
         }
     }
 
@@ -92,7 +92,7 @@ export class Task {
     }
 
     set id(input) {
-        const regex = /^[a-z,0-9,-]{36,36}$/;
+        const regex = /^[a-z0-9-]{36}$/;
         if (!input) return;
         if (regex.test(input)) {
             this.#id = input;
